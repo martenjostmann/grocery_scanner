@@ -19,9 +19,6 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -30,6 +27,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.grocery_scanner.R;
+import de.grocery_scanner.api.VolleyCallback;
+import de.grocery_scanner.api.eanDatabase;
 import de.grocery_scanner.helper.scraper.webScraper;
 
 public class barcodeScanner extends AppCompatActivity {
@@ -150,6 +149,18 @@ public class barcodeScanner extends AppCompatActivity {
 
                     try {
                         barCode = future.get();
+
+                        eanDatabase eanD = new eanDatabase(barCode,"http://opengtindb.org/", getApplicationContext());
+                        eanD.getProduct(new VolleyCallback() {
+                            @Override
+                            public void onSuccessResponse(String result) {
+                                Log.d("TAG", "onSuccessResponse: " + result);
+                            }
+                        });
+
+                        Log.d("TAG", "receiveDetections: "  + eanD.getResult());
+
+
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {

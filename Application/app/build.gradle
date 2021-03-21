@@ -40,4 +40,5 @@ dependencies {
 
     // jsoup HTML parser library @ https://jsoup.org/
     implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.mcxiaoke.volley:library:1.0.+'
 }

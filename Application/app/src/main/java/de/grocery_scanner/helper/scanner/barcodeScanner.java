@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
@@ -30,6 +33,7 @@ import de.grocery_scanner.AppDatabase;
 import de.grocery_scanner.R;
 import de.grocery_scanner.api.VolleyCallback;
 import de.grocery_scanner.api.eanDatabase;
+import de.grocery_scanner.helper.insertEan.insertEan;
 import de.grocery_scanner.helper.scraper.webScraper;
 import de.grocery_scanner.persistence.elements.ean;
 import de.grocery_scanner.persistence.instantiateDatabase;
@@ -130,8 +134,8 @@ public class barcodeScanner extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
-                if (barcodes.size() != 0) {
 
+                if (barcodes.size() != 0) {
                     ExecutorService pool = Executors.newFixedThreadPool(3);
                     Future<String> future = pool.submit(new Callable<String>(){
 
@@ -147,13 +151,21 @@ public class barcodeScanner extends AppCompatActivity {
                                 barcodeText.setText(barcodeData);
                                 toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                             }
-
                             return barcodeData;
                         }
                     });
 
                     try {
+
                         barCode = future.get();
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                cameraSource.release();
+                            }
+                        });
 
                         AppDatabase database = new instantiateDatabase().getDatabase(getApplicationContext());
                         eanDAO = database.getEanDAO();
@@ -168,20 +180,23 @@ public class barcodeScanner extends AppCompatActivity {
                                 @Override
                                 public void onSuccessResponse(String result) {
                                     Log.d("TAG", "onSuccessResponse: " + result);
-                                    ApiResult = result;
-                                    ean newEan = new ean();
-                                    newEan.setEanId(barCode);
-                                    newEan.setName(result);
-                                    eanDAO.insert(newEan);
+
+                                    if(result != null) {
+                                        ean newEan = new ean();
+                                        newEan.setEanId(barCode);
+                                        newEan.setName(result);
+                                        eanDAO.insert(newEan);
+                                    }else{
+                                        Intent insertEanIntent = new Intent(getApplicationContext(), insertEan.class);
+                                        insertEanIntent.putExtra("ean", barCode);
+                                        startActivity(insertEanIntent);
+                                    }
                                 }
                             });
 
                             Log.d("TAG", "test: " + ApiResult);
 
                         }
-
-
-
 
                     } catch (ExecutionException e) {
                         e.printStackTrace();
@@ -193,4 +208,6 @@ public class barcodeScanner extends AppCompatActivity {
             }
         });
     }
+
+
 }

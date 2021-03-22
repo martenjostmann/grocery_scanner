@@ -26,10 +26,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import de.grocery_scanner.AppDatabase;
 import de.grocery_scanner.R;
 import de.grocery_scanner.api.VolleyCallback;
 import de.grocery_scanner.api.eanDatabase;
 import de.grocery_scanner.helper.scraper.webScraper;
+import de.grocery_scanner.persistence.elements.ean;
+import de.grocery_scanner.persistence.instantiateDatabase;
 
 public class barcodeScanner extends AppCompatActivity {
 
@@ -43,6 +46,8 @@ public class barcodeScanner extends AppCompatActivity {
     private String barcodeData;
 
     private String barCode;
+    private de.grocery_scanner.persistence.dao.eanDAO eanDAO;
+    private String ApiResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,15 +155,32 @@ public class barcodeScanner extends AppCompatActivity {
                     try {
                         barCode = future.get();
 
-                        eanDatabase eanD = new eanDatabase(barCode,"http://opengtindb.org/", getApplicationContext());
-                        eanD.getProduct(new VolleyCallback() {
-                            @Override
-                            public void onSuccessResponse(String result) {
-                                Log.d("TAG", "onSuccessResponse: " + result);
-                            }
-                        });
+                        AppDatabase database = new instantiateDatabase().getDatabase(getApplicationContext());
+                        eanDAO = database.getEanDAO();
 
-                        Log.d("TAG", "receiveDetections: "  + eanD.getResult());
+                        int countEntries = eanDAO.checkEan(barCode);
+
+                        if(countEntries != 0){
+
+                        }else{
+                            eanDatabase eanD = new eanDatabase(barCode,"http://opengtindb.org/", getApplicationContext());
+                            eanD.getProduct(new VolleyCallback() {
+                                @Override
+                                public void onSuccessResponse(String result) {
+                                    Log.d("TAG", "onSuccessResponse: " + result);
+                                    ApiResult = result;
+                                    ean newEan = new ean();
+                                    newEan.setEanId(barCode);
+                                    newEan.setName(result);
+                                    eanDAO.insert(newEan);
+                                }
+                            });
+
+                            Log.d("TAG", "test: " + ApiResult);
+
+                        }
+
+
 
 
                     } catch (ExecutionException e) {

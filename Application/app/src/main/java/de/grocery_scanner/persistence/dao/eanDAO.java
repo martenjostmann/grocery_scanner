@@ -23,7 +23,7 @@ public interface eanDAO {
     public void delete(ean item);
 
     @Query("SELECT * FROM ean")
-    public List<ean> getLed();
+    public List<ean> getAllEan();
 
     @Query("SELECT * FROM ean WHERE eanId = :id")
     public ean getItemById(String id);

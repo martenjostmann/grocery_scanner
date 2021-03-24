@@ -65,9 +65,7 @@ public class eanDatabase {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("TAG", "Error: " + error.getMessage());
-                Toast.makeText(context,
-                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                callback.onErrorResponse(error);
 
             }
         });

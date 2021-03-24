@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#3949AB</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="reptile_green">#26de81</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#FF4444</color>
 </resources>

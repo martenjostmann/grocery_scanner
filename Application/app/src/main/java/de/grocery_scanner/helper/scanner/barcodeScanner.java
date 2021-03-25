@@ -28,6 +28,8 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -39,8 +41,10 @@ import de.grocery_scanner.R;
 import de.grocery_scanner.api.VolleyCallback;
 import de.grocery_scanner.api.eanDatabase;
 import de.grocery_scanner.helper.insertEan.insertEan;
+import de.grocery_scanner.helper.insertInventory.insertInventory;
 import de.grocery_scanner.helper.scraper.webScraper;
 import de.grocery_scanner.persistence.elements.ean;
+import de.grocery_scanner.persistence.elements.inventory;
 import de.grocery_scanner.persistence.instantiateDatabase;
 
 public class barcodeScanner extends AppCompatActivity {
@@ -58,6 +62,7 @@ public class barcodeScanner extends AppCompatActivity {
 
     private String barCode;
     private de.grocery_scanner.persistence.dao.eanDAO eanDAO;
+    private de.grocery_scanner.persistence.dao.inventoryDAO inventoryDAO;
     private String ApiResult;
 
     @Override
@@ -176,7 +181,7 @@ public class barcodeScanner extends AppCompatActivity {
 
                             barCode = future.get();
 
-                            AppDatabase database = new instantiateDatabase().getDatabase(getApplicationContext());
+                            final AppDatabase database = new instantiateDatabase().getDatabase(getApplicationContext());
                             eanDAO = database.getEanDAO();
 
                             int countEntries = eanDAO.checkEan(barCode);
@@ -184,7 +189,7 @@ public class barcodeScanner extends AppCompatActivity {
                             if (countEntries != 0) {
                                 String productName = eanDAO.getItemById(barCode).getName();
                                 barcodeText.setText(productName);
-
+                                new insertInventory(database,barCode);
                             } else {
                                 eanDatabase eanD = new eanDatabase(barCode, "http://opengtindb.org/", getApplicationContext());
                                 eanD.getProduct(new VolleyCallback() {
@@ -199,6 +204,7 @@ public class barcodeScanner extends AppCompatActivity {
                                             newEan.setEanId(barCode);
                                             newEan.setName(result);
                                             eanDAO.insert(newEan);
+                                            new insertInventory(database,barCode);
                                         } else {
                                             insertEan();
                                         }
@@ -241,9 +247,5 @@ public class barcodeScanner extends AppCompatActivity {
         Intent insertEanIntent = new Intent(getApplicationContext(), insertEan.class);
         insertEanIntent.putExtra("ean", barCode);
         startActivity(insertEanIntent);
-    }
-
-    private void insertInventory(AppDatabase database){
-        
     }
 }

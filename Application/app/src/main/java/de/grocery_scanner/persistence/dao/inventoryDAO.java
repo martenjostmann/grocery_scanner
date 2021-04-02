@@ -28,7 +28,7 @@ public interface inventoryDAO {
     public List<inventoryEan> getInventory();
 
     @Query("SELECT * FROM inventory WHERE inventoryId = :id")
-    public inventory getItemById(String id);
+    public inventory getItemById(int id);
 
     @Query("SELECT * FROM inventory WHERE eanId = :ean")
     public inventory getItemByEanId(String ean);

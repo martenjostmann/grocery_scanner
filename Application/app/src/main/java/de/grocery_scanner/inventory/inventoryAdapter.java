@@ -1,70 +1,72 @@
 package de.grocery_scanner.inventory;
 
-import android.app.Activity;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
+
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.NonNull;
 
-import org.w3c.dom.Text;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.dao.inventoryDAO;
-import de.grocery_scanner.persistence.elements.inventory;
 
-public class inventoryAdapter extends ArrayAdapter<inventoryDAO.inventoryEan> {
 
-    private final Activity context;
-    private List<inventoryDAO.inventoryEan> inventory;
+public class inventoryAdapter extends RecyclerView.Adapter<inventoryAdapter.ViewHolder> {
 
-    public inventoryAdapter(Activity context,List<inventoryDAO.inventoryEan> inventory) {
-        super(context, R.layout.fragment_inventory_listitem, inventory);
-        this.context = context;
+    List<inventoryDAO.inventoryEan> inventory;
+
+    public inventoryAdapter(List<inventoryDAO.inventoryEan> inventory) {
         this.inventory = inventory;
     }
 
-    public void remove(int position) {
-        inventory.remove(position);
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        notifyDataSetChanged();
-    }
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View rowView = inflater.inflate(R.layout.fragment_inventory_listitem, parent, false);
 
-    public void setInventory(List<inventoryDAO.inventoryEan> inventory) {
-        this.inventory = inventory;
+        ViewHolder viewHolder = new ViewHolder(rowView);
+
+        return viewHolder;
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-
-        LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.fragment_inventory_listitem, null, true);
-
-        ConstraintLayout constraintLayout = rowView.findViewById(R.id.inventory_table_row);
-        TextView name = (TextView) rowView.findViewById(R.id.name);
-        TextView use = (TextView) rowView.findViewById(R.id.use);
-        TextView inDateText = (TextView) rowView.findViewById(R.id.inDateText);
-
-        name.setText(inventory.get(i).getName());
-        use.setText("" + inventory.get(i).getUse());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.name.setText(inventory.get(position).getName());
+        holder.use.setText("" + inventory.get(position).getUse());
 
 
-        Date inDate = inventory.get(i).getInDate();
+        Date inDate = inventory.get(position).getInDate();
         String inDateString = transformDate(inDate);
 
-        inDateText.setText(inDateString);
+        holder.inDateText.setText(inDateString);
+    }
 
-        return rowView;
+    @Override
+    public int getItemCount() {
+        return inventory.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView name, use, inDateText;
+
+        public ViewHolder(@NonNull View itemView){
+            super(itemView);
+
+            name = itemView.findViewById(R.id.name);
+            use = itemView.findViewById(R.id.use);
+            inDateText = itemView.findViewById(R.id.inDateText);
+        }
+
     }
 
     private String transformDate(Date date){
@@ -75,8 +77,5 @@ public class inventoryAdapter extends ArrayAdapter<inventoryDAO.inventoryEan> {
         return(day +"."+ monthNumber + "." + year);
     }
 
-    public List<inventoryDAO.inventoryEan> getData(){
-        return inventory;
-    }
 
 }

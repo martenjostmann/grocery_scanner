@@ -1,39 +1,42 @@
 package de.grocery_scanner.inventory;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+
+import android.graphics.Canvas;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.grocery_scanner.AppDatabase;
+
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.dao.inventoryDAO;
 import de.grocery_scanner.persistence.elements.inventory;
-import de.grocery_scanner.persistence.instantiateDatabase;
-import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
 
-import static android.icu.text.DisplayContext.LENGTH_SHORT;
+import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
+
 
 
 public class inventoryFragment extends Fragment{
@@ -42,7 +45,7 @@ public class inventoryFragment extends Fragment{
     private AppDatabase database;
     private List<inventoryEan> inventory;
     private inventoryEan[] inventoryArray;
-    private SwipeMenuListView inventoryList;
+    private RecyclerView inventoryList;
     private inventoryAdapter inventoryAdapter;
 
     public inventoryFragment() {
@@ -59,115 +62,118 @@ public class inventoryFragment extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+
+        inventory = new ArrayList<inventoryEan>();  //initialize inventory
+        inventoryAdapter = new inventoryAdapter(inventory);
+
+        inventoryList = getView().findViewById(R.id.inventoryList);
+        inventoryList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        //set custom adapter
+        inventoryList.setAdapter(inventoryAdapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+        inventoryList.addItemDecoration(dividerItemDecoration);
+
         // initiate a new database connection
         database = Room.databaseBuilder(getActivity(), AppDatabase.class, "mydb")
                 .allowMainThreadQueries()
                 .build();
 
+        //get inventory out of the database and fill the inventoryList
         inventoryDAO = database.getInventoryDAO();
-        inventory =  inventoryDAO.getInventory();
+        inventory.addAll(inventoryDAO.getInventory());
 
-
-
-        inventoryAdapter = new inventoryAdapter(getActivity(), inventory);
-        inventoryList = getView().findViewById(R.id.inventoryList);
-        inventoryList.setAdapter(inventoryAdapter);
-
-
-
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-            @Override
-            public void create(SwipeMenu menu) {
-                // create "delete" item
-                SwipeMenuItem deleteItem = new SwipeMenuItem(
-                        getContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
-                // set item width
-                deleteItem.setWidth(170);
-                // set a icon
-                //deleteItem.setIcon(R.drawable.ic_baseline_delete_24);
-                deleteItem.setIcon(getContext().getDrawable(R.drawable.ic_baseline_delete_24));
-                // add to menu
-                menu.addMenuItem(deleteItem);
-
-                // create "use" item
-                SwipeMenuItem useItem = new SwipeMenuItem(
-                        getContext());
-                // set item background
-                useItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                        0xCE)));
-                // set item width
-                useItem.setWidth(500);
-                // set a icon
-                useItem.setTitle("Benutzen");
-                useItem.setTitleSize(18);
-                // set item title font color
-                useItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(useItem);
-            }
-        };
-
-        // set creator
-        inventoryList.setMenuCreator(creator);
-
-
-        // Right
-        inventoryList.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
-
-        inventoryList.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index) {
-                    case 0:
-
-                        return false;
-
-                    case 1:
-                        Log.d("TAG", "onMenuItemClick: " + position);
-
-                        inventoryEan currentItem = inventory.get(position);
-                        String eanId = currentItem.eanId;
-                        int use = currentItem.use;
-                        inventory inventoryItem = inventoryDAO.getItemByEanId(eanId);
-                        inventoryItem.setUse(use + 1);
-                        inventoryDAO.update(inventoryItem);
-
-
-                        
-                        return false;
-
-                }
-                // false : close the menu; true : not close the menu
-                return false;
-            }
-        });
-
-        inventoryList.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
-
-            @Override
-            public void onSwipeStart(int position) {
-
-                inventoryList.smoothOpenMenu(position);
-            }
-
-            @Override
-            public void onSwipeEnd(int position) {
-
-            }
-        });
-
+        //initialize ItemTouchHelper
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(inventoryList);
 
     }
 
-    private void updateData(){
-        inventory.get(1).use = 100;
-        inventoryAdapter.notifyDataSetChanged();
 
-        Toast.makeText(getContext(),"Item changed",Toast.LENGTH_SHORT).show();
+    /*
+    * Add swipe actions to inventoryList
+    * */
+    private inventoryEan currenItem = null;
 
-    }
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+            currenItem = inventory.get(position);
+
+            switch (direction) {
+                case ItemTouchHelper.LEFT:
+                    /*
+                     * If the user swipes to the left direction the inventory item will be deleted
+                     * */
+                    inventory.remove(position);     //remove item from the list
+                    //@Todo remove Item from the database
+                    inventoryAdapter.notifyItemRemoved(position);   //notify the adapter that an item has changed
+                    /*
+                     * Undo the whole process
+                     *
+                     * The user can press the Undo button to undo all changes
+                     * */
+                    Snackbar.make(inventoryList, currenItem.getName(), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            inventory.add(position, currenItem);
+                            inventoryAdapter.notifyItemInserted(position);
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.colorPrimary)).show();
+
+                    break;
+                case ItemTouchHelper.RIGHT:
+                    /*
+                    * If the user swipes to the right direction the inventory item will be used (use increase)
+                    * */
+                    inventory.get(position).use++;  //increase itemNumber
+                    inventory inventoryItem = inventoryDAO.getItemById(inventory.get(position).inventoryId);    //get current item out of the database
+                    inventoryItem.setUse(inventory.get(position).use);  //increase itemNumber
+                    inventoryDAO.update(inventoryItem);     //update item in the database
+                    inventoryAdapter.notifyDataSetChanged();    //notify the adapter that an item has changed
+
+                    /*
+                    * Undo the whole process
+                    *
+                    * The user can press the Undo button to undo all changes
+                    * */
+                    Snackbar.make(inventoryList, currenItem.getName(), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            inventory.get(position).use--;
+                            inventory inventoryItem = inventoryDAO.getItemById(inventory.get(position).inventoryId);
+                            inventoryItem.setUse(inventory.get(position).use);
+                            inventoryDAO.update(inventoryItem);
+                            inventoryAdapter.notifyDataSetChanged();
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.colorPrimary)).show();
+                    break;
+            }
+        }
+
+        /*
+        * Background design of the inventoryListSwipeActions
+        * */
+        public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
+
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.red))
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(getContext(), R.color.reptile_green))
+                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
+                    .addSwipeRightActionIcon(R.drawable.ic_baseline_library_add_24)
+                    .create()
+                    .decorate();
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 }

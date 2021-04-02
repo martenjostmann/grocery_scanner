@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.grocery_scanner.AppDatabase;
 import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
+import de.grocery_scanner.helper.insertInventory.insertInventory;
 import de.grocery_scanner.helper.scanner.barcodeScanner;
 import de.grocery_scanner.persistence.elements.ean;
 import de.grocery_scanner.persistence.instantiateDatabase;
@@ -71,6 +72,8 @@ public class insertEan extends AppCompatActivity {
         //Show info
         Toast toast = Toast.makeText(this, "Produkt hinzugefügt", Toast.LENGTH_LONG);
         toast.show();
+
+        new insertInventory(database,ean);
 
         startActivity(new Intent(insertEan.this, barcodeScanner.class));
     }

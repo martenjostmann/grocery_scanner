@@ -47,6 +47,7 @@ public class inventoryFragment extends Fragment{
     private inventoryEan[] inventoryArray;
     private RecyclerView inventoryList;
     private inventoryAdapter inventoryAdapter;
+    private inventory inventoryItem;
 
     public inventoryFragment() {
         // Required empty public constructor
@@ -114,8 +115,8 @@ public class inventoryFragment extends Fragment{
                     /*
                      * If the user swipes to the left direction the inventory item will be deleted
                      * */
+                    inventoryDAO.delete(inventoryDAO.getItemById(inventory.get(position).inventoryId)); //delete item from database
                     inventory.remove(position);     //remove item from the list
-                    //@Todo remove Item from the database
                     inventoryAdapter.notifyItemRemoved(position);   //notify the adapter that an item has changed
                     /*
                      * Undo the whole process
@@ -126,6 +127,14 @@ public class inventoryFragment extends Fragment{
                         @Override
                         public void onClick(View v) {
                             inventory.add(position, currenItem);
+                            //create inventory with currentItem Object
+                            inventoryItem = new inventory();
+                            inventoryItem.setEanId(currenItem.getEanId());
+                            inventoryItem.setInDate(currenItem.getInDate());
+                            inventoryItem.setInventoryId(currenItem.getInventoryId());
+                            inventoryItem.setUse(currenItem.getUse());
+                            inventoryDAO.insert(inventoryItem);
+
                             inventoryAdapter.notifyItemInserted(position);
                         }
                     }).setActionTextColor(getResources().getColor(R.color.colorPrimary)).show();
@@ -136,7 +145,7 @@ public class inventoryFragment extends Fragment{
                     * If the user swipes to the right direction the inventory item will be used (use increase)
                     * */
                     inventory.get(position).use++;  //increase itemNumber
-                    inventory inventoryItem = inventoryDAO.getItemById(inventory.get(position).inventoryId);    //get current item out of the database
+                    inventoryItem = inventoryDAO.getItemById(inventory.get(position).inventoryId);    //get current item out of the database
                     inventoryItem.setUse(inventory.get(position).use);  //increase itemNumber
                     inventoryDAO.update(inventoryItem);     //update item in the database
                     inventoryAdapter.notifyDataSetChanged();    //notify the adapter that an item has changed

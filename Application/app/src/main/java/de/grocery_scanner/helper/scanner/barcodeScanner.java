@@ -17,6 +17,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -37,6 +40,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.grocery_scanner.AppDatabase;
+import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
 import de.grocery_scanner.api.VolleyCallback;
 import de.grocery_scanner.api.eanDatabase;
@@ -63,7 +67,8 @@ public class barcodeScanner extends AppCompatActivity {
     private String barCode;
     private de.grocery_scanner.persistence.dao.eanDAO eanDAO;
     private de.grocery_scanner.persistence.dao.inventoryDAO inventoryDAO;
-    private String ApiResult;
+    private FloatingActionButton nextBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,24 +81,19 @@ public class barcodeScanner extends AppCompatActivity {
         addedNumber = findViewById(R.id.addedNumber);
         bottomNav = findViewById(R.id.bottomNav);
 
+        nextBtn = findViewById(R.id.nextBtn);
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
+
         initialiseDetectorsAndSources();
 
-//        try {
-//            getCodeData();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
-    private void getCodeData() throws InterruptedException {
-
-        webScraper webScraper = new webScraper("https://en.wikipedia.org/");
-        Thread thread = new Thread(webScraper);
-        thread.start();
-        thread.join();
-
-    }
 
 
     private void initialiseDetectorsAndSources() {

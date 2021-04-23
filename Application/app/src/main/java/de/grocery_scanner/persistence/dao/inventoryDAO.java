@@ -39,6 +39,12 @@ public interface inventoryDAO {
     @Query("SELECT count(*) FROM inventory")
     public int checkIfEmpty();
 
+    @Query("SELECT count(*) FROM inventory WHERE outDate IS null")
+    public int getInventoryQuantity();
+
+    @Query("Select  *, count(*) as \"frequencies\"  FROM inventory INNER JOIN ean USING (eanId)  Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
+    public List<inventoryEan> getFavourite(int limit);
+
 
     //Joined Tables class to access data
     static class inventoryEan {

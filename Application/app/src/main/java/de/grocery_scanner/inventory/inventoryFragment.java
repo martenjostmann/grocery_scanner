@@ -53,6 +53,11 @@ public class inventoryFragment extends Fragment{
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        inventoryAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,7 +98,7 @@ public class inventoryFragment extends Fragment{
     }
 
 
-    /*
+    /**
     * Add swipe actions to inventoryList
     * */
     private inventoryEan currenItem = null;
@@ -169,7 +174,7 @@ public class inventoryFragment extends Fragment{
             }
         }
 
-        /*
+        /**
         * Background design of the inventoryListSwipeActions
         * */
         public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){

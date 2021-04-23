@@ -18,4 +18,4 @@ The project is currently __WIP__
 
 ---
 
-For a complete User Guidw on how to use Android Studio look [here](https://developer.android.com/studio/intro)
+For a complete User Guide on how to use Android Studio look [here](https://developer.android.com/studio/intro)

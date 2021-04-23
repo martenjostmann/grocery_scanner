@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/inventory_table_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:text="Cola Mix"
+                android:textAllCaps="false"
+                android:textSize="20dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/inDateIcon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/ic_baseline_access_time_24"
+                android:backgroundTint="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name" />
+
+            <TextView
+                android:id="@+id/inDateText"
+                android:layout_width="0dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:text="12.09.2019 - 10:00"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="11dp"
+                app:layout_constraintStart_toEndOf="@+id/inDateIcon"
+                app:layout_constraintTop_toBottomOf="@+id/name" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/quantity_side_bar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/round_outline_right"
+                android:backgroundTint="@color/colorPrimary"
+                app:layout_constraintLeft_toRightOf="@id/name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/use"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="5"
+                    android:textSize="30dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+

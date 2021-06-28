@@ -57,6 +57,7 @@ public class inventoryFragment extends Fragment{
     public void onResume() {
         super.onResume();
         inventoryAdapter.notifyDataSetChanged();
+
     }
 
     @Override

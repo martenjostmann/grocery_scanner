@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:tabIndicatorColor="@color/colorPrimaryDark"></com.google.android.material.tabs.TabLayout>
+            app:tabIndicatorColor="@color/colorPrimaryDark" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,12 +40,15 @@
     </androidx.viewpager.widget.ViewPager>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addGrocery"
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:tint="@color/white"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:borderWidth="0dp" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

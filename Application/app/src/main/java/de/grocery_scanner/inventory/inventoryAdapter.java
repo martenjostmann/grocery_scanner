@@ -69,6 +69,23 @@ public class inventoryAdapter extends RecyclerView.Adapter<inventoryAdapter.View
 
     }
 
+    public void setInventory(List<inventoryDAO.inventoryEan> inventory) {
+        this.inventory = inventory;
+        notifyDataSetChanged();
+    }
+
+    public inventoryDAO.inventoryEan getInventoryAt(int position) {
+        return inventory.get(position);
+    }
+
+    public void addInventoryAt(int position, inventoryDAO.inventoryEan inventoryItem) {
+        inventory.add(position, inventoryItem);
+    }
+
+    public inventoryDAO.inventoryEan removeInventoryAt(int position) {
+        return inventory.remove(position);
+    }
+
     private String transformDate(Date date){
         String day = (String) DateFormat.format("dd",  date);
         String monthNumber = (String) DateFormat.format("MM",   date);

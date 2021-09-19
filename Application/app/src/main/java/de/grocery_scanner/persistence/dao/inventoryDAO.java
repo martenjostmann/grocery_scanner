@@ -2,6 +2,7 @@ package de.grocery_scanner.persistence.dao;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -25,7 +26,7 @@ public interface inventoryDAO {
     public void delete(inventory item);
 
     @Query("SELECT * " + "FROM inventory " + "INNER JOIN ean USING (eanId)")
-    public List<inventoryEan> getInventory();
+    public LiveData<List<inventoryEan>> getInventory();
 
     @Query("SELECT * FROM inventory WHERE inventoryId = :id")
     public inventory getItemById(int id);
@@ -40,10 +41,10 @@ public interface inventoryDAO {
     public int checkIfEmpty();
 
     @Query("SELECT count(*) FROM inventory WHERE outDate IS null")
-    public int getInventoryQuantity();
+    public LiveData<Integer> inventoryQuantity();
 
     @Query("Select  *, count(*) as \"frequencies\"  FROM inventory INNER JOIN ean USING (eanId)  Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
-    public List<inventoryEan> getFavourite(int limit);
+    public LiveData<List<inventoryEan>> getFavourite(int limit);
 
 
     //Joined Tables class to access data

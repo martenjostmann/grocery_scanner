@@ -1,4 +1,4 @@
-package de.grocery_scanner;
+package de.grocery_scanner.viewModel;
 
 import android.app.Application;
 
@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.grocery_scanner.AppRepository;
 import de.grocery_scanner.persistence.dao.inventoryDAO;
@@ -29,6 +31,13 @@ public class MainViewModel extends AndroidViewModel {
         repository.insert(items);
     }
 
+    public void insertInventorybyEan(String barCode){
+        inventory inventoryItem = new inventory();
+        inventoryItem.setEanId(barCode);
+        inventoryItem.setInDate(new Date());
+        this.insert(inventoryItem);
+    }
+
     public void update(inventory... items) {
         repository.update(items);
     }
@@ -45,8 +54,8 @@ public class MainViewModel extends AndroidViewModel {
         return getInventory;
     }
 
-    public inventory getItemById(int id) {
-        return repository.getItemById(id);
+    public inventory getItemById(int id){
+        return repository.getItembyId(id);
     }
 
     public inventory getItemByEanId(String ean) {

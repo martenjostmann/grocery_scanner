@@ -32,5 +32,5 @@ public interface eanDAO {
     public int checkEan(String id);
 
     @Query("SELECT count(*) FROM ean")
-    public int checkIfEmpty();
+    public int checkIfEanEmpty();
 }

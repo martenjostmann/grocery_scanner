@@ -20,18 +20,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
 
 import de.grocery_scanner.AppDatabase;
-import de.grocery_scanner.MainViewModel;
+import de.grocery_scanner.viewModel.MainViewModel;
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.dao.inventoryDAO;
 
 import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
-import de.grocery_scanner.persistence.instantiateDatabase;
 
 
 public class homeFragment extends Fragment {

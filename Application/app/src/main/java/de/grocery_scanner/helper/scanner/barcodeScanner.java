@@ -1,9 +1,9 @@
 package de.grocery_scanner.helper.scanner;
 
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,14 +11,11 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,8 +28,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -45,14 +40,15 @@ import de.grocery_scanner.R;
 import de.grocery_scanner.api.VolleyCallback;
 import de.grocery_scanner.api.eanDatabase;
 import de.grocery_scanner.helper.insertEan.insertEan;
-import de.grocery_scanner.helper.insertInventory.insertInventory;
-import de.grocery_scanner.helper.scraper.webScraper;
 import de.grocery_scanner.persistence.elements.ean;
-import de.grocery_scanner.persistence.elements.inventory;
 import de.grocery_scanner.persistence.instantiateDatabase;
+import de.grocery_scanner.viewModel.EanViewModel;
+import de.grocery_scanner.viewModel.MainViewModel;
 
 public class barcodeScanner extends AppCompatActivity {
 
+    private MainViewModel mainViewModel;
+    private EanViewModel eanViewModel;
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -65,7 +61,6 @@ public class barcodeScanner extends AppCompatActivity {
     private String barcodeData;
 
     private String barCode;
-    private de.grocery_scanner.persistence.dao.eanDAO eanDAO;
     private de.grocery_scanner.persistence.dao.inventoryDAO inventoryDAO;
     private FloatingActionButton nextBtn;
 
@@ -74,6 +69,9 @@ public class barcodeScanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_scanner);
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        eanViewModel = ViewModelProviders.of(this).get(EanViewModel.class);
 
         toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC,100);
         surfaceView = findViewById(R.id.surface_view);
@@ -181,15 +179,12 @@ public class barcodeScanner extends AppCompatActivity {
 
                             barCode = future.get();
 
-                            final AppDatabase database = new instantiateDatabase().getDatabase(getApplicationContext());
-                            eanDAO = database.getEanDAO();
-
-                            int countEntries = eanDAO.checkEan(barCode);
+                            int countEntries = eanViewModel.checkEan(barCode);
 
                             if (countEntries != 0) {
-                                String productName = eanDAO.getItemById(barCode).getName();
+                                String productName = eanViewModel.getItemById(barCode).getName();
                                 barcodeText.setText(productName);
-                                new insertInventory(database,barCode);
+                                mainViewModel.insertInventorybyEan(barCode);
                             } else {
                                 eanDatabase eanD = new eanDatabase(barCode, "http://opengtindb.org/", getApplicationContext());
                                 eanD.getProduct(new VolleyCallback() {
@@ -203,8 +198,8 @@ public class barcodeScanner extends AppCompatActivity {
                                             ean newEan = new ean();
                                             newEan.setEanId(barCode);
                                             newEan.setName(result);
-                                            eanDAO.insert(newEan);
-                                            new insertInventory(database,barCode);
+                                            eanViewModel.insert(newEan);
+                                            mainViewModel.insertInventorybyEan(barCode);
                                         } else {
                                             insertEan();
                                         }

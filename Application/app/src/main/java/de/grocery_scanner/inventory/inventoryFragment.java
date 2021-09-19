@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 
 import android.view.LayoutInflater;
@@ -31,13 +30,11 @@ import java.util.List;
 
 import de.grocery_scanner.AppDatabase;
 
-import de.grocery_scanner.MainViewModel;
+import de.grocery_scanner.viewModel.MainViewModel;
 import de.grocery_scanner.R;
-import de.grocery_scanner.persistence.dao.inventoryDAO;
 import de.grocery_scanner.persistence.elements.inventory;
 
 import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
-import de.grocery_scanner.persistence.instantiateDatabase;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
@@ -46,7 +43,6 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class inventoryFragment extends Fragment{
 
     private MainViewModel mainViewModel;
-    private inventoryDAO inventoryDAO;
     private AppDatabase database;
     private List<inventoryEan> inventory;
     private inventoryEan[] inventoryArray;
@@ -128,7 +124,7 @@ public class inventoryFragment extends Fragment{
                      * If the user swipes to the left direction the inventory item will be deleted
                      * */
                     inventoryEanItem = inventoryAdapter.getInventoryAt(position);
-                    mainViewModel.delete(inventoryDAO.getItemById(inventoryEanItem.inventoryId)); //delete item from database
+                    mainViewModel.delete(mainViewModel.getItemById(inventoryEanItem.inventoryId)); //delete item from database
                     inventoryAdapter.removeInventoryAt(position);     //remove item from the list
                     inventoryAdapter.notifyItemRemoved(position);   //notify the adapter that an item has changed
                     /*
@@ -161,7 +157,7 @@ public class inventoryFragment extends Fragment{
 
                     inventoryEanItem = inventoryAdapter.getInventoryAt(position);
                     inventoryEanItem.use++;  //increase itemNumber
-                    inventory inventoryItem = inventoryDAO.getItemById(inventoryEanItem.inventoryId);    //get current item out of the database
+                    inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);    //get current item out of the database
                     inventoryItem.setUse(inventoryEanItem.use);  //increase itemNumber
 
                     mainViewModel.update(inventoryItem);     //update item in the database
@@ -177,7 +173,7 @@ public class inventoryFragment extends Fragment{
                         public void onClick(View v) {
                             inventoryEan inventoryEanItem = inventoryAdapter.getInventoryAt(position);
                             inventoryEanItem.use--;
-                            inventory inventoryItem = inventoryDAO.getItemById(inventoryEanItem.inventoryId);
+                            inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);
                             inventoryItem.setUse(inventoryEanItem.use);
 
                             mainViewModel.update(inventoryItem);

@@ -1,6 +1,7 @@
 package de.grocery_scanner.helper.insertEan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,23 +16,28 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.grocery_scanner.AppDatabase;
 import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
-import de.grocery_scanner.helper.insertInventory.insertInventory;
 import de.grocery_scanner.helper.scanner.barcodeScanner;
 import de.grocery_scanner.persistence.elements.ean;
 import de.grocery_scanner.persistence.instantiateDatabase;
+import de.grocery_scanner.viewModel.EanViewModel;
+import de.grocery_scanner.viewModel.MainViewModel;
 
 public class insertEan extends AppCompatActivity {
 
+    private MainViewModel mainViewModel;
+    private EanViewModel eanViewModel;
     private String ean;
     private FloatingActionButton addEan;
     private EditText addProductText;
 
-    private de.grocery_scanner.persistence.dao.eanDAO eanDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_ean);
+
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        eanViewModel = ViewModelProviders.of(this).get(EanViewModel.class);
 
         //get ean from barcodeScanner
         ean = getIntent().getStringExtra("ean");
@@ -57,23 +63,19 @@ public class insertEan extends AppCompatActivity {
 
     private void insertProduct(){
 
-        //create connection
-        AppDatabase database = new instantiateDatabase().getDatabase(getApplicationContext());
-        eanDAO = database.getEanDAO();
-
         //Create new ean object
         ean newEan = new ean();
         newEan.setEanId(ean);
         newEan.setName(addProductText.getText().toString());
 
         //Insert newEan into database
-        eanDAO.insert(newEan);
+        eanViewModel.insert(newEan);
 
         //Show info
         Toast toast = Toast.makeText(this, "Produkt hinzugefügt", Toast.LENGTH_LONG);
         toast.show();
 
-        new insertInventory(database,ean);
+        mainViewModel.insertInventorybyEan(ean);
 
         startActivity(new Intent(insertEan.this, barcodeScanner.class));
     }

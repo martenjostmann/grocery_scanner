@@ -25,7 +25,7 @@ public interface inventoryDAO {
     @Delete
     public void delete(inventory item);
 
-    @Query("SELECT * " + "FROM inventory " + "INNER JOIN ean USING (eanId)")
+    @Query("SELECT * " + "FROM inventory " + "INNER JOIN ean USING (eanId)" + "ORDER BY inDate DESC")
     public LiveData<List<inventoryEan>> getInventory();
 
     @Query("SELECT * FROM inventory WHERE inventoryId = :id")

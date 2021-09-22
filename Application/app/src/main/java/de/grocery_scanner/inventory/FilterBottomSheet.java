@@ -44,58 +44,13 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         dateFilter = false;
         alphaFilter = true;
 
-        bnt_use = getView().findViewById(R.id.bnt_use);
-        btn_date = getView().findViewById(R.id.btn_date);
-        btn_alpha = getView().findViewById(R.id.btn_alpha);
+        //bnt_use = getView().findViewById(R.id.bnt_use);
+        //btn_date = getView().findViewById(R.id.btn_date);
+        //btn_alpha = getView().findViewById(R.id.btn_alpha);
         btn_send = getView().findViewById(R.id.btn_send);
 
 
-        bnt_use.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alphaFilter = false;
-                dateFilter = true;
-                useFilter = false;
 
-                bnt_use.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                bnt_use.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.transparent));
-                btn_date.setTextColor(getResources().getColor(R.color.white));
-                btn_date.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_alpha.setTextColor(getResources().getColor(R.color.white));
-                btn_alpha.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-            }
-        });
-
-        btn_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alphaFilter = false;
-                dateFilter = true;
-                useFilter = false;
-
-                bnt_use.setTextColor(getResources().getColor(R.color.white));
-                bnt_use.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_date.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                btn_date.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.transparent));
-                btn_alpha.setTextColor(getResources().getColor(R.color.white));
-                btn_alpha.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-            }
-        });
-
-        btn_alpha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alphaFilter = true;
-                dateFilter = false;
-                useFilter = false;
-                bnt_use.setTextColor(getResources().getColor(R.color.white));
-                bnt_use.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_date.setTextColor(getResources().getColor(R.color.white));
-                btn_date.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_alpha.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                btn_alpha.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.transparent));
-            }
-        });
 
         btn_send.setOnClickListener(new View.OnClickListener(){
             @Override

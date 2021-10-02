@@ -3,11 +3,12 @@
     <color name="colorPrimary">#039BE5</color>
     <color name="colorPrimaryDark">#3949AB</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorBackground">#e1f5fe</color>
     <color name="reptile_green">#26de81</color>
     <color name="white">#FFFFFF</color>
     <color name="red">#FF4444</color>
     <color name="primaryBackground">#f2f2f2</color>
     <color name="gray">#c4c4c4</color>
-
+    <color name="black">#000000</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

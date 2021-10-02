@@ -1,15 +1,18 @@
 package de.grocery_scanner.inventory;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -31,7 +34,9 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     private MaterialButtonToggleGroup.OnButtonCheckedListener groupR2Listener;
 
     private BottomSheetListener mListener;
-    private FloatingActionButton btn_send;
+    private Button btnSend;
+    private Button btnReset;
+    private FloatingActionButton btnCancle;
     private Sort sort;
     private Group _group;
 
@@ -46,8 +51,15 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        View bottomSheet = view.findViewById(R.id.bottom_sheet);
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        behavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+
         // Define Buttons
-        btn_send = getView().findViewById(R.id.btn_send);
+        btnSend = view.findViewById(R.id.btn_send);
+        btnReset = view.findViewById(R.id.reset);
 
         // Sort Buttons
         sortToggleButtonR1 = view.findViewById(R.id.sortToggleButtonR1);
@@ -56,6 +68,24 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
         // Group Buttons
         groupToggleButtonR1 = view.findViewById(R.id.groupToggleButtonR1);
         groupToggleButtonR2 = view.findViewById(R.id.groupToggleButtonR2);
+
+        // Default values
+        if(sortToggleButtonR1.getCheckedButtonId() == -1 && sortToggleButtonR2.getCheckedButtonId() == -1){
+            sortToggleButtonR1.check(R.id.dateDESC);
+        }
+
+        if(groupToggleButtonR1.getCheckedButtonId() == -1 && groupToggleButtonR2.getCheckedButtonId() == -1){
+            groupToggleButtonR1.check(R.id.groupNull);
+        }
+
+        // Reset to default values
+        btnReset.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                sortToggleButtonR1.check(R.id.dateDESC);
+                groupToggleButtonR1.check(R.id.groupNull);
+            }
+        });
 
 
         // Sort Listeners
@@ -146,7 +176,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
 
-        btn_send.setOnClickListener(new View.OnClickListener(){
+        btnSend.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 
@@ -177,4 +207,6 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
             + " must implement BottomSheetListener");
         }
     }
+
+
 }

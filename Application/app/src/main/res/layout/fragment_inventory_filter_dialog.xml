@@ -1,41 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:layout_height="match_parent" android:layout_width="match_parent">
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimaryDark"
+    <Button
+        android:id="@+id/reset"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="63dp"
+        android:layout_marginEnd="15dp"
+        android:text="Reset"
+        android:textColor="#2D2F31"
+        app:layout_constraintBottom_toTopOf="@+id/sort"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/filter"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/txt_headline"
-        >
+        app:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Filter"
-            android:textSize="25dp"
-            android:layout_marginStart="15dp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/white"
-            />
+    </Button>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Filter anwenden"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/sort"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_headline">
+        app:layout_constraintTop_toBottomOf="@+id/filter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
 
         <LinearLayout
@@ -49,8 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sortierung"
-                android:textSize="20dp"
-                />
+                android:textSize="20dp" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/sortToggleButtonR1"
@@ -65,24 +88,24 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:insetRight="2.5dp"
                     android:text="Datum"
                     app:icon="@drawable/ic_baseline_arrow_downward_24"
                     app:iconGravity="end"
-                    app:iconSize="15dp" 
-                    android:layout_weight="1"/>
+                    app:iconSize="15dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/dateASC"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:insetLeft="2.5dp"
                     android:text="Datum"
                     app:icon="@drawable/ic_baseline_arrow_upward_24"
                     app:iconGravity="end"
-                    app:iconSize="15dp" 
-                    android:layout_weight="1"/>
+                    app:iconSize="15dp" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -99,24 +122,24 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:insetRight="2.5dp"
                     android:text="Nutzung"
                     app:icon="@drawable/ic_baseline_arrow_downward_24"
                     app:iconGravity="end"
-                    app:iconSize="15dp" 
-                    android:layout_weight="1"/>
+                    app:iconSize="15dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/useASC"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:insetLeft="2.5dp"
                     android:text="Nutzung"
                     app:icon="@drawable/ic_baseline_arrow_upward_24"
                     app:iconGravity="end"
-                    app:iconSize="15dp" 
-                    android:layout_weight="1"/>
+                    app:iconSize="15dp" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -125,10 +148,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="18dp"
         android:background="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/group"
@@ -145,7 +169,7 @@
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sort">
+        app:layout_constraintTop_toBottomOf="@+id/view">
 
 
         <LinearLayout
@@ -173,7 +197,7 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:insetLeft="2.5dp"
+                    android:insetRight="2.5dp"
                     android:text="Keine"
                     android:layout_weight="1"/>
 
@@ -182,7 +206,7 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:insetRight="2.5dp"
+                    android:insetLeft="2.5dp"
                     android:text="Artikel"
                     android:layout_weight="1"/>
 
@@ -203,7 +227,7 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:insetLeft="2.5dp"
+                    android:insetRight="2.5dp"
                     android:text="Datum"
                     android:layout_weight="1"/>
 
@@ -212,7 +236,7 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:insetRight="5dp"
+                    android:insetLeft="5dp"
                     android:text="Nutzung"
                     android:layout_weight="1"/>
 
@@ -226,44 +250,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group">
 
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <Button
             android:id="@+id/btn_send"
-            android:layout_width="375dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="28dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:backgroundTint="@color/reptile_green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/del_btn"
-            app:srcCompat="@drawable/ic_baseline_check_24"
-            app:tint="@color/white" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/del_btn"
-            android:layout_width="375dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="30dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:backgroundTint="@color/red"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorBackground"
+            app:strokeColor="@color/transparent"
+            android:layout_marginEnd="15dp"
+            android:text="Bestätigen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_close_black_24dp"
-            app:tint="@color/white" />
+            app:layout_constraintStart_toStartOf="parent">
+
+        </Button>
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

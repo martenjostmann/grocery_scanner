@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import de.grocery_scanner.helper.scanner.barcodeScanner;
 import de.grocery_scanner.home.homeFragment;
 import de.grocery_scanner.inventory.FilterBottomSheet;
+import de.grocery_scanner.inventory.InventoryFilter;
 import de.grocery_scanner.inventory.inventoryFragment;
 
 
@@ -218,7 +220,9 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
     }
 
     @Override
-    public void onSendClicked(String text) {
-        Log.d("test", "Test");
+    public void onSendClicked(InventoryFilter filter) {
+        FragmentManager fm = getSupportFragmentManager();
+        inventoryFragment page = (inventoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager.getCurrentItem());
+        page.applyFilter(filter);
     }
 }

@@ -53,7 +53,7 @@
                 />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/dateToggleButton"
+                android:id="@+id/sortToggleButtonR1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,7 +87,7 @@
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/useToggleButton"
+                android:id="@+id/sortToggleButtonR2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -162,14 +162,23 @@
                 />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggle1"
+                android:id="@+id/groupToggleButtonR1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt1"
+                    android:id="@+id/groupNull"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:insetLeft="2.5dp"
+                    android:text="Keine"
+                    android:layout_weight="1"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/groupArticle"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
@@ -177,19 +186,12 @@
                     android:text="Artikel"
                     android:layout_weight="1"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt2"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:insetLeft="2.5dp"
-                    android:text="Datum"
-                    android:layout_weight="1"/>
+
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggle2"
+                android:id="@+id/groupToggleButtonR2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -197,7 +199,16 @@
                 app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt3"
+                    android:id="@+id/groupDate"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:insetLeft="2.5dp"
+                    android:text="Datum"
+                    android:layout_weight="1"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/groupUse"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="50dp"

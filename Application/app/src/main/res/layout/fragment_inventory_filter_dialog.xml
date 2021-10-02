@@ -21,7 +21,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="63dp"
         android:layout_marginEnd="15dp"
-        android:text="Reset"
+        android:text="@string/inventory_filter_reset"
         android:textColor="#2D2F31"
         app:layout_constraintBottom_toTopOf="@+id/sort"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,9 +37,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Filter anwenden"
+        android:text="@string/inventory_filter_header"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/sort"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -72,8 +72,8 @@
                 android:id="@+id/time_filter_headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sortierung"
-                android:textSize="20dp" />
+                android:text="@string/inventory_filter_sort_header"
+                android:textSize="20sp" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/sortToggleButtonR1"
@@ -90,7 +90,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:insetRight="2.5dp"
-                    android:text="Datum"
+                    android:text="@string/inventory_filter_sort_date"
                     app:icon="@drawable/ic_baseline_arrow_downward_24"
                     app:iconGravity="end"
                     app:iconSize="15dp" />
@@ -102,7 +102,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:insetLeft="2.5dp"
-                    android:text="Datum"
+                    android:text="@string/inventory_filter_sort_date"
                     app:icon="@drawable/ic_baseline_arrow_upward_24"
                     app:iconGravity="end"
                     app:iconSize="15dp" />
@@ -124,7 +124,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:insetRight="2.5dp"
-                    android:text="Nutzung"
+                    android:text="@string/inventory_filter_sort_use"
                     app:icon="@drawable/ic_baseline_arrow_downward_24"
                     app:iconGravity="end"
                     app:iconSize="15dp" />
@@ -136,7 +136,7 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:insetLeft="2.5dp"
-                    android:text="Nutzung"
+                    android:text="@string/inventory_filter_sort_use"
                     app:icon="@drawable/ic_baseline_arrow_upward_24"
                     app:iconGravity="end"
                     app:iconSize="15dp" />
@@ -181,8 +181,8 @@
                 android:id="@+id/group_filter_headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Gruppierung"
-                android:textSize="20dp"
+                android:text="@string/inventory_filter_group_header"
+                android:textSize="20sp"
                 />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
@@ -198,7 +198,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:insetRight="2.5dp"
-                    android:text="Keine"
+                    android:text="@string/inventory_filter_group_none"
                     android:layout_weight="1"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -207,7 +207,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:insetLeft="2.5dp"
-                    android:text="Artikel"
+                    android:text="@string/inventory_filter_group_article"
                     android:layout_weight="1"/>
 
 
@@ -228,7 +228,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:insetRight="2.5dp"
-                    android:text="Datum"
+                    android:text="@string/inventory_filter_sort_date"
                     android:layout_weight="1"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -237,7 +237,7 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:insetLeft="5dp"
-                    android:text="Nutzung"
+                    android:text="@string/inventory_filter_sort_use"
                     android:layout_weight="1"/>
 
 
@@ -265,7 +265,7 @@
             android:backgroundTint="@color/colorBackground"
             app:strokeColor="@color/transparent"
             android:layout_marginEnd="15dp"
-            android:text="Bestätigen"
+            android:text="@string/inventory_filter_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

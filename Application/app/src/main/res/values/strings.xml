@@ -11,4 +11,19 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="inventory_filter_header">Filter anwenden</string>
+    <string name="inventory_filter_reset">Reset</string>
+    <string name="inventory_filter_sort_header">Sortierung</string>
+    <string name="inventory_filter_sort_date">Datum</string>
+    <string name="inventory_filter_sort_use">Nutzung</string>
+    <string name="inventory_filter_group_header">Gruppierung</string>
+    <string name="inventory_filter_group_none">Keine</string>
+    <string name="inventory_filter_group_article">Artikel</string>
+    <string name="inventory_filter_send">Bestätigen</string>
+    <string name="insert_ean_header">Produkt ist nicht vorhanden</string>
+    <string name="insert_ean_product_name">Produktname eingeben</string>
+    <string name="home_inventory_container_header">Anzahl Artikel im Inventar</string>
+    <string name="home_favourite_container_header">Beliebte Artikel</string>
+    <string name="main_menu_home">Home</string>
+    <string name="main_menu_inventory">Inventar</string>
 </resources>

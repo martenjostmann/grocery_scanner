@@ -1,4 +1,4 @@
-package de.grocery_scanner.inventory;
+package de.grocery_scanner.inventory.filter;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,16 +10,15 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
+import de.grocery_scanner.inventory.InventoryFilter;
 
 
 public class FilterBottomSheet extends BottomSheetDialogFragment {

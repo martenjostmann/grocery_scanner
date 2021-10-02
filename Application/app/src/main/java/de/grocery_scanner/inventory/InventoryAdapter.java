@@ -15,14 +15,14 @@ import java.util.Date;
 import java.util.List;
 
 import de.grocery_scanner.R;
-import de.grocery_scanner.persistence.dao.inventoryDAO;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
 
 
-public class inventoryAdapter extends RecyclerView.Adapter<inventoryAdapter.ViewHolder> {
+public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
 
-    List<inventoryDAO.inventoryEan> inventory;
+    List<InventoryDAO.inventoryEan> inventory;
 
-    public inventoryAdapter(List<inventoryDAO.inventoryEan> inventory) {
+    public InventoryAdapter(List<InventoryDAO.inventoryEan> inventory) {
         this.inventory = inventory;
     }
 
@@ -69,20 +69,20 @@ public class inventoryAdapter extends RecyclerView.Adapter<inventoryAdapter.View
 
     }
 
-    public void setInventory(List<inventoryDAO.inventoryEan> inventory) {
+    public void setInventory(List<InventoryDAO.inventoryEan> inventory) {
         this.inventory = inventory;
         notifyDataSetChanged();
     }
 
-    public inventoryDAO.inventoryEan getInventoryAt(int position) {
+    public InventoryDAO.inventoryEan getInventoryAt(int position) {
         return inventory.get(position);
     }
 
-    public void addInventoryAt(int position, inventoryDAO.inventoryEan inventoryItem) {
+    public void addInventoryAt(int position, InventoryDAO.inventoryEan inventoryItem) {
         inventory.add(position, inventoryItem);
     }
 
-    public inventoryDAO.inventoryEan removeInventoryAt(int position) {
+    public InventoryDAO.inventoryEan removeInventoryAt(int position) {
         return inventory.remove(position);
     }
 

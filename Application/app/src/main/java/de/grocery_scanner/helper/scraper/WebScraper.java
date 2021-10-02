@@ -6,13 +6,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-public class webScraper implements Runnable{
+public class WebScraper implements Runnable{
 
     private String url;
     private Document doc;
 
 
-    public webScraper(String url){
+    public WebScraper(String url){
         this.url = url;
     }
 

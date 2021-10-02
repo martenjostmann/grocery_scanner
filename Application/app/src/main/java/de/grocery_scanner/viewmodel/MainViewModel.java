@@ -1,4 +1,4 @@
-package de.grocery_scanner.viewModel;
+package de.grocery_scanner.viewmodel;
 
 import android.app.Application;
 
@@ -8,16 +8,15 @@ import androidx.lifecycle.LiveData;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import de.grocery_scanner.AppRepository;
-import de.grocery_scanner.persistence.dao.inventoryDAO;
-import de.grocery_scanner.persistence.elements.inventory;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
+import de.grocery_scanner.persistence.elements.Inventory;
 
 public class MainViewModel extends AndroidViewModel {
 
     private AppRepository repository;
-    private LiveData<List<inventoryDAO.inventoryEan>> getInventory;
+    private LiveData<List<InventoryDAO.inventoryEan>> getInventory;
     private LiveData<Integer> inventoryQuantity;
 
     public MainViewModel(@NonNull Application application) {
@@ -27,22 +26,22 @@ public class MainViewModel extends AndroidViewModel {
         inventoryQuantity = repository.getInventoryQuantity();
     }
 
-    public void insert(inventory... items) {
+    public void insert(Inventory... items) {
         repository.insert(items);
     }
 
     public void insertInventorybyEan(String barCode){
-        inventory inventoryItem = new inventory();
+        Inventory inventoryItem = new Inventory();
         inventoryItem.setEanId(barCode);
         inventoryItem.setInDate(new Date());
         this.insert(inventoryItem);
     }
 
-    public void update(inventory... items) {
+    public void update(Inventory... items) {
         repository.update(items);
     }
 
-    public void delete(inventory item) {
+    public void delete(Inventory item) {
         repository.delete(item);
     }
 
@@ -50,15 +49,15 @@ public class MainViewModel extends AndroidViewModel {
         return inventoryQuantity;
     }
 
-    public LiveData<List<inventoryDAO.inventoryEan>> getInventory() {
+    public LiveData<List<InventoryDAO.inventoryEan>> getInventory() {
         return getInventory;
     }
 
-    public inventory getItemById(int id){
+    public Inventory getItemById(int id){
         return repository.getItembyId(id);
     }
 
-    public inventory getItemByEanId(String ean) {
+    public Inventory getItemByEanId(String ean) {
         return repository.getItemByEanId(ean);
     }
 
@@ -70,7 +69,7 @@ public class MainViewModel extends AndroidViewModel {
         return repository.checkIfEmpty();
     }
 
-    public LiveData<List<inventoryDAO.inventoryEan>> getFavourite(int limit) {
+    public LiveData<List<InventoryDAO.inventoryEan>> getFavourite(int limit) {
         return repository.getFavourite(limit);
     }
 }

@@ -1,5 +1,8 @@
 package de.grocery_scanner.inventory;
 
+import de.grocery_scanner.inventory.filter.Group;
+import de.grocery_scanner.inventory.filter.Sort;
+
 public class InventoryFilter {
     private Sort sort;
     private Group group;

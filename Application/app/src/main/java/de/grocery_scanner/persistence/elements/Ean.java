@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "ean")
-public class ean {
+public class Ean {
     @PrimaryKey()
     @NonNull
     private String eanId;

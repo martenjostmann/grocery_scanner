@@ -25,25 +25,25 @@ import java.util.List;
 import java.util.Locale;
 
 import de.grocery_scanner.AppDatabase;
-import de.grocery_scanner.viewModel.MainViewModel;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
+import de.grocery_scanner.viewmodel.MainViewModel;
 import de.grocery_scanner.R;
-import de.grocery_scanner.persistence.dao.inventoryDAO;
 
-import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
 
 
-public class homeFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     private MainViewModel mainViewModel;
     private LinearLayout favouriteContainerContent;
-    private inventoryDAO inventoryDAO;
+    private InventoryDAO inventoryDAO;
     private AppDatabase database;
     private List<inventoryEan> favouriteItems;
     private View view;
     private TextView favouriteInnerContainerItemHeader;
     private TextView favouriteInnerContainerItemText;
 
-    public homeFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 

@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".helper.insertEan.insertEan"></activity>
+        <activity android:name=".helper.insertean.InsertEan"></activity>
 
-        <activity android:name=".helper.scanner.barcodeScanner" />
+        <activity android:name=".helper.scanner.BarcodeScanner" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

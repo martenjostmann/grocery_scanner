@@ -2,18 +2,15 @@ package de.grocery_scanner;
 
 import android.content.Intent;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,11 +21,11 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import de.grocery_scanner.helper.scanner.barcodeScanner;
-import de.grocery_scanner.home.homeFragment;
-import de.grocery_scanner.inventory.FilterBottomSheet;
+import de.grocery_scanner.helper.scanner.BarcodeScanner;
+import de.grocery_scanner.home.HomeFragment;
+import de.grocery_scanner.inventory.filter.FilterBottomSheet;
 import de.grocery_scanner.inventory.InventoryFilter;
-import de.grocery_scanner.inventory.inventoryFragment;
+import de.grocery_scanner.inventory.InventoryFragment;
 
 
 public class MainActivity extends AppCompatActivity implements FilterBottomSheet.BottomSheetListener {
@@ -83,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
      * */
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new inventoryFragment(), "Inventar");
-        adapter.addFragment(new homeFragment(), "Home");
+        adapter.addFragment(new InventoryFragment(), "Inventar");
+        adapter.addFragment(new HomeFragment(), "Home");
         viewPager.setAdapter(adapter);
 
     }
@@ -169,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
                     bottomSheet.show(getSupportFragmentManager(), "bottomSheet");
 
                 }else if (position == 1){
-                    startActivity(new Intent(MainActivity.this, barcodeScanner.class));
+                    startActivity(new Intent(MainActivity.this, BarcodeScanner.class));
                 }
 
             }
@@ -222,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
     @Override
     public void onSendClicked(InventoryFilter filter) {
         FragmentManager fm = getSupportFragmentManager();
-        inventoryFragment page = (inventoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager.getCurrentItem());
+        InventoryFragment page = (InventoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager.getCurrentItem());
         page.applyFilter(filter);
     }
 }

@@ -1,4 +1,4 @@
-package de.grocery_scanner.viewModel;
+package de.grocery_scanner.viewmodel;
 
 import android.app.Application;
 
@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import java.util.List;
 
 import de.grocery_scanner.AppRepository;
-import de.grocery_scanner.persistence.elements.ean;
+import de.grocery_scanner.persistence.elements.Ean;
 
 public class EanViewModel extends AndroidViewModel {
     private AppRepository repository;
@@ -18,23 +18,23 @@ public class EanViewModel extends AndroidViewModel {
         repository = new AppRepository(application);
     }
 
-    public void insert(ean... eans) {
+    public void insert(Ean... eans) {
         repository.insert(eans);
     }
 
-    public void update(ean... eans) {
+    public void update(Ean... eans) {
         repository.update(eans);
     }
 
-    public void delete(ean ean) {
+    public void delete(Ean ean) {
         repository.delete(ean);
     }
 
-    public List<ean> getAllEan() {
+    public List<Ean> getAllEan() {
         return repository.getAllEan();
     }
 
-    public ean getItemById(String id) {
+    public Ean getItemById(String id) {
         return repository.getEanById(id);
     }
 

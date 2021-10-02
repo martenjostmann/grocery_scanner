@@ -30,27 +30,27 @@ import java.util.List;
 
 import de.grocery_scanner.AppDatabase;
 
-import de.grocery_scanner.viewModel.MainViewModel;
+import de.grocery_scanner.viewmodel.MainViewModel;
 import de.grocery_scanner.R;
-import de.grocery_scanner.persistence.elements.inventory;
+import de.grocery_scanner.persistence.elements.Inventory;
 
-import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
 
 
-public class inventoryFragment extends Fragment{
+public class InventoryFragment extends Fragment{
 
     private MainViewModel mainViewModel;
     private AppDatabase database;
     private List<inventoryEan> inventory;
     private inventoryEan[] inventoryArray;
     private RecyclerView inventoryList;
-    private inventoryAdapter inventoryAdapter;
+    private InventoryAdapter inventoryAdapter;
     private inventoryEan inventoryEanItem;
 
-    public inventoryFragment() {
+    public InventoryFragment() {
         // Required empty public constructor
     }
 
@@ -75,7 +75,7 @@ public class inventoryFragment extends Fragment{
 
         inventory = new ArrayList<inventoryEan>();  //initialize inventory
 
-        inventoryAdapter = new inventoryAdapter(inventory);
+        inventoryAdapter = new InventoryAdapter(inventory);
 
         inventoryList = getView().findViewById(R.id.inventoryList);
         inventoryList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -138,7 +138,7 @@ public class inventoryFragment extends Fragment{
                             inventoryAdapter.addInventoryAt(position, currenItem);
 
                             //create inventory with currentItem Object
-                            inventory inventoryItem = new inventory();
+                            Inventory inventoryItem = new Inventory();
                             inventoryItem.setEanId(currenItem.getEanId());
                             inventoryItem.setInDate(currenItem.getInDate());
                             inventoryItem.setInventoryId(currenItem.getInventoryId());
@@ -157,7 +157,7 @@ public class inventoryFragment extends Fragment{
 
                     inventoryEanItem = inventoryAdapter.getInventoryAt(position);
                     inventoryEanItem.use++;  //increase itemNumber
-                    inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);    //get current item out of the database
+                    Inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);    //get current item out of the database
                     inventoryItem.setUse(inventoryEanItem.use);  //increase itemNumber
 
                     mainViewModel.update(inventoryItem);     //update item in the database
@@ -173,7 +173,7 @@ public class inventoryFragment extends Fragment{
                         public void onClick(View v) {
                             inventoryEan inventoryEanItem = inventoryAdapter.getInventoryAt(position);
                             inventoryEanItem.use--;
-                            inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);
+                            Inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);
                             inventoryItem.setUse(inventoryEanItem.use);
 
                             mainViewModel.update(inventoryItem);

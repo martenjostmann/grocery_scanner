@@ -34,18 +34,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import de.grocery_scanner.AppDatabase;
 import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
 import de.grocery_scanner.api.VolleyCallback;
-import de.grocery_scanner.api.eanDatabase;
-import de.grocery_scanner.helper.insertEan.insertEan;
-import de.grocery_scanner.persistence.elements.ean;
-import de.grocery_scanner.persistence.instantiateDatabase;
-import de.grocery_scanner.viewModel.EanViewModel;
-import de.grocery_scanner.viewModel.MainViewModel;
+import de.grocery_scanner.api.EanDatabase;
+import de.grocery_scanner.helper.insertean.InsertEan;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
+import de.grocery_scanner.persistence.elements.Ean;
+import de.grocery_scanner.viewmodel.EanViewModel;
+import de.grocery_scanner.viewmodel.MainViewModel;
 
-public class barcodeScanner extends AppCompatActivity {
+public class BarcodeScanner extends AppCompatActivity {
 
     private MainViewModel mainViewModel;
     private EanViewModel eanViewModel;
@@ -61,7 +60,7 @@ public class barcodeScanner extends AppCompatActivity {
     private String barcodeData;
 
     private String barCode;
-    private de.grocery_scanner.persistence.dao.inventoryDAO inventoryDAO;
+    private InventoryDAO inventoryDAO;
     private FloatingActionButton nextBtn;
 
 
@@ -111,10 +110,10 @@ public class barcodeScanner extends AppCompatActivity {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(barcodeScanner.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(BarcodeScanner.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
-                        ActivityCompat.requestPermissions(barcodeScanner.this, new
+                        ActivityCompat.requestPermissions(BarcodeScanner.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                     }
 
@@ -186,7 +185,7 @@ public class barcodeScanner extends AppCompatActivity {
                                 barcodeText.setText(productName);
                                 mainViewModel.insertInventorybyEan(barCode);
                             } else {
-                                eanDatabase eanD = new eanDatabase(barCode, "http://opengtindb.org/", getApplicationContext());
+                                EanDatabase eanD = new EanDatabase(barCode, "http://opengtindb.org/", getApplicationContext());
                                 eanD.getProduct(new VolleyCallback() {
                                     @Override
                                     public void onSuccessResponse(String result) {
@@ -195,7 +194,7 @@ public class barcodeScanner extends AppCompatActivity {
                                             barcodeText.setText(result);
 
                                             //insert product into database
-                                            ean newEan = new ean();
+                                            Ean newEan = new Ean();
                                             newEan.setEanId(barCode);
                                             newEan.setName(result);
                                             eanViewModel.insert(newEan);
@@ -239,7 +238,7 @@ public class barcodeScanner extends AppCompatActivity {
     }
 
     private void insertEan(){
-        Intent insertEanIntent = new Intent(getApplicationContext(), insertEan.class);
+        Intent insertEanIntent = new Intent(getApplicationContext(), InsertEan.class);
         insertEanIntent.putExtra("ean", barCode);
         startActivity(insertEanIntent);
     }

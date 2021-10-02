@@ -8,15 +8,15 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import de.grocery_scanner.persistence.dao.eanDAO;
-import de.grocery_scanner.persistence.dao.inventoryDAO;
-import de.grocery_scanner.persistence.elements.ean;
-import de.grocery_scanner.persistence.elements.inventory;
-import de.grocery_scanner.persistence.dao.inventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.dao.EanDAO;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
+import de.grocery_scanner.persistence.elements.Ean;
+import de.grocery_scanner.persistence.elements.Inventory;
+import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
 
 public class AppRepository {
-    private eanDAO eanDAO;
-    private inventoryDAO inventoryDAO;
+    private EanDAO eanDAO;
+    private InventoryDAO inventoryDAO;
     private LiveData<List<inventoryEan>> getInventory;
     private LiveData<Integer> inventoryQuantity;
 
@@ -28,27 +28,27 @@ public class AppRepository {
         getInventory = inventoryDAO.getInventory();
     }
 
-    public void insert(inventory... items) {
+    public void insert(Inventory... items) {
         new InsertInventoryAsyncTask(inventoryDAO).execute(items);
     }
 
-    public void insert(ean... eans) {
+    public void insert(Ean... eans) {
         new InsertEanAsyncTask(eanDAO).execute(eans);
     }
 
-    public void update(inventory... items) {
+    public void update(Inventory... items) {
         new UpdateInventoryAsyncTask(inventoryDAO).execute(items);
     }
 
-    public void update(ean... eans) {
+    public void update(Ean... eans) {
         new UpdateEanAsyncTask(eanDAO).execute(eans);
     }
 
-    public void delete(inventory item) {
+    public void delete(Inventory item) {
         new DeleteInventoryAsyncTask(inventoryDAO).execute(item);
     }
 
-    public void delete(ean ean) {
+    public void delete(Ean ean) {
         new DeleteEanAsyncTask(eanDAO).execute(ean);
     }
 
@@ -56,7 +56,7 @@ public class AppRepository {
         return getInventory;
     }
 
-    public inventory getItembyId(int id) {
+    public Inventory getItembyId(int id) {
         try {
             return new getItemByIdAsyncTask(inventoryDAO).execute(id).get();
         } catch (ExecutionException e) {
@@ -68,7 +68,7 @@ public class AppRepository {
         return null;
     }
 
-    public inventory getItemByEanId(String ean) {
+    public Inventory getItemByEanId(String ean) {
         try {
             return new getItemByEanIdAsyncTask(inventoryDAO).execute(ean).get();
         } catch (ExecutionException e) {
@@ -104,11 +104,11 @@ public class AppRepository {
         return inventoryQuantity;
     }
 
-    public List<ean> getAllEan() {
+    public List<Ean> getAllEan() {
         return eanDAO.getAllEan();
     }
 
-    public ean getEanById(String id) {
+    public Ean getEanById(String id) {
         return eanDAO.getItemById(id);
     }
 
@@ -120,142 +120,142 @@ public class AppRepository {
         return eanDAO.checkIfEanEmpty();
     }
 
-    private static class InsertInventoryAsyncTask extends AsyncTask<inventory, Void, Void> {
+    private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
 
-        private inventoryDAO inventoryDAO;
+        private InventoryDAO inventoryDAO;
 
-        private  InsertInventoryAsyncTask(inventoryDAO inventoryDAO) {
+        private  InsertInventoryAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
         @Override
-        protected Void doInBackground(inventory... inventories) {
+        protected Void doInBackground(Inventory... inventories) {
             inventoryDAO.insert(inventories);
             return null;
         }
     }
 
-    private static class InsertEanAsyncTask extends AsyncTask<ean, Void, Void> {
+    private static class InsertEanAsyncTask extends AsyncTask<Ean, Void, Void> {
 
-        private eanDAO eanDAO;
+        private EanDAO eanDAO;
 
-        private  InsertEanAsyncTask(eanDAO eanDAO) {
+        private  InsertEanAsyncTask(EanDAO eanDAO) {
             this.eanDAO = eanDAO;
         }
 
         @Override
-        protected Void doInBackground(ean... eans) {
+        protected Void doInBackground(Ean... eans) {
             eanDAO.insert(eans);
             return null;
         }
     }
 
-    private static class UpdateInventoryAsyncTask extends AsyncTask<inventory, Void, Void> {
+    private static class UpdateInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
 
-        private inventoryDAO inventoryDAO;
+        private InventoryDAO inventoryDAO;
 
-        private UpdateInventoryAsyncTask(inventoryDAO inventoryDAO) {
+        private UpdateInventoryAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
         @Override
-        protected Void doInBackground(inventory... inventories) {
+        protected Void doInBackground(Inventory... inventories) {
             inventoryDAO.update(inventories);
             return null;
         }
 
     }
 
-    private static class UpdateEanAsyncTask extends AsyncTask<ean, Void, Void> {
+    private static class UpdateEanAsyncTask extends AsyncTask<Ean, Void, Void> {
 
-        private eanDAO eanDAO;
+        private EanDAO eanDAO;
 
-        private UpdateEanAsyncTask(eanDAO eanDAO) {
+        private UpdateEanAsyncTask(EanDAO eanDAO) {
             this.eanDAO = eanDAO;
         }
 
         @Override
-        protected Void doInBackground(ean... eans) {
+        protected Void doInBackground(Ean... eans) {
             eanDAO.update(eans);
             return null;
         }
     }
 
-    private static class DeleteInventoryAsyncTask extends AsyncTask<inventory, Void, Void> {
+    private static class DeleteInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
 
-        private inventoryDAO inventoryDAO;
+        private InventoryDAO inventoryDAO;
 
-        private DeleteInventoryAsyncTask(inventoryDAO inventoryDAO) {
+        private DeleteInventoryAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
         @Override
-        protected Void doInBackground(inventory... inventories) {
+        protected Void doInBackground(Inventory... inventories) {
             inventoryDAO.delete(inventories[0]);
             return null;
         }
     }
 
-    private static class DeleteEanAsyncTask extends AsyncTask<ean, Void, Void> {
+    private static class DeleteEanAsyncTask extends AsyncTask<Ean, Void, Void> {
 
-        private eanDAO eanDAO;
+        private EanDAO eanDAO;
 
-        private DeleteEanAsyncTask(eanDAO eanDAO) {
+        private DeleteEanAsyncTask(EanDAO eanDAO) {
             this.eanDAO = eanDAO;
         }
 
         @Override
-        protected Void doInBackground(ean... eans) {
+        protected Void doInBackground(Ean... eans) {
             eanDAO.delete(eans[0]);
             return null;
         }
     }
 
-    private static class getItemByIdAsyncTask extends AsyncTask<Integer, Void, inventory> {
+    private static class getItemByIdAsyncTask extends AsyncTask<Integer, Void, Inventory> {
 
-        private inventoryDAO inventoryDAO;
+        private InventoryDAO inventoryDAO;
 
-        private getItemByIdAsyncTask(inventoryDAO inventoryDAO) {
+        private getItemByIdAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
         @Override
-        protected inventory doInBackground(Integer... items) {
+        protected Inventory doInBackground(Integer... items) {
             return inventoryDAO.getItemById(items[0]);
         }
 
         @Override
-        protected void onPostExecute(inventory inventory) {
+        protected void onPostExecute(Inventory inventory) {
             super.onPostExecute(inventory);
         }
     }
 
 
 
-    private static class getItemByEanIdAsyncTask extends AsyncTask<String, Void, inventory> {
+    private static class getItemByEanIdAsyncTask extends AsyncTask<String, Void, Inventory> {
 
-        private inventoryDAO inventoryDAO;
+        private InventoryDAO inventoryDAO;
 
-        private getItemByEanIdAsyncTask(inventoryDAO inventoryDAO) {
+        private getItemByEanIdAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
         @Override
-        protected inventory doInBackground(String... ean) {
+        protected Inventory doInBackground(String... ean) {
             return inventoryDAO.getItemByEanId(ean[0]);
         }
 
         @Override
-        protected void onPostExecute(inventory inventory) {
+        protected void onPostExecute(Inventory inventory) {
             super.onPostExecute(inventory);
         }
     }
 
     private static class checkInventoryAsyncTask extends AsyncTask<String, Void, Integer> {
 
-        private inventoryDAO inventoryDAO;
+        private InventoryDAO inventoryDAO;
 
-        private checkInventoryAsyncTask(inventoryDAO inventoryDAO) {
+        private checkInventoryAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 

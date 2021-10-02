@@ -14,7 +14,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-public class eanDatabase {
+public class EanDatabase {
 
     private String ean;
     private String queryId = "400000000";
@@ -23,7 +23,7 @@ public class eanDatabase {
     private String result;
 
 
-    public eanDatabase(String ean, String URL, Context context) {
+    public EanDatabase(String ean, String URL, Context context) {
         this.ean = ean;
         this.URL = URL;
         this.context = context;

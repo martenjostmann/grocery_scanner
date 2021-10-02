@@ -1,9 +1,6 @@
 package de.grocery_scanner.persistence.dao;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,37 +10,37 @@ import androidx.room.Update;
 import java.util.Date;
 import java.util.List;
 
-import de.grocery_scanner.persistence.elements.inventory;
+import de.grocery_scanner.persistence.elements.Inventory;
 
 @Dao
-public interface inventoryDAO {
+public interface InventoryDAO {
     @Insert
-    public void insert(inventory... items);
+    public void insert(Inventory... items);
 
     @Update
-    public void update(inventory... items);
+    public void update(Inventory... items);
     @Delete
-    public void delete(inventory item);
+    public void delete(Inventory item);
 
-    @Query("SELECT * " + "FROM inventory " + "INNER JOIN ean USING (eanId)" + "ORDER BY inDate DESC")
+    @Query("SELECT * " + "FROM Inventory " + "INNER JOIN Ean USING (eanId)" + "ORDER BY inDate DESC")
     public LiveData<List<inventoryEan>> getInventory();
 
-    @Query("SELECT * FROM inventory WHERE inventoryId = :id")
-    public inventory getItemById(int id);
+    @Query("SELECT * FROM Inventory WHERE inventoryId = :id")
+    public Inventory getItemById(int id);
 
-    @Query("SELECT * FROM inventory WHERE eanId = :ean")
-    public inventory getItemByEanId(String ean);
+    @Query("SELECT * FROM Inventory WHERE eanId = :ean")
+    public Inventory getItemByEanId(String ean);
 
-    @Query("SELECT count(*) FROM inventory WHERE inventoryId = :id")
+    @Query("SELECT count(*) FROM Inventory WHERE inventoryId = :id")
     public int checkInventory(String id);
 
-    @Query("SELECT count(*) FROM inventory")
+    @Query("SELECT count(*) FROM Inventory")
     public int checkIfEmpty();
 
-    @Query("SELECT count(*) FROM inventory WHERE outDate IS null")
+    @Query("SELECT count(*) FROM Inventory WHERE outDate IS null")
     public LiveData<Integer> inventoryQuantity();
 
-    @Query("Select  *, count(*) as \"frequencies\"  FROM inventory INNER JOIN ean USING (eanId)  Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
+    @Query("Select  *, count(*) as \"frequencies\"  FROM Inventory INNER JOIN Ean USING (eanId)  Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
     public LiveData<List<inventoryEan>> getFavourite(int limit);
 
 

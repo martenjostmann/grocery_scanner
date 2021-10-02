@@ -1,4 +1,4 @@
-package de.grocery_scanner.helper.insertEan;
+package de.grocery_scanner.helper.insertean;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,16 +13,13 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import de.grocery_scanner.AppDatabase;
-import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
-import de.grocery_scanner.helper.scanner.barcodeScanner;
-import de.grocery_scanner.persistence.elements.ean;
-import de.grocery_scanner.persistence.instantiateDatabase;
-import de.grocery_scanner.viewModel.EanViewModel;
-import de.grocery_scanner.viewModel.MainViewModel;
+import de.grocery_scanner.helper.scanner.BarcodeScanner;
+import de.grocery_scanner.persistence.elements.Ean;
+import de.grocery_scanner.viewmodel.EanViewModel;
+import de.grocery_scanner.viewmodel.MainViewModel;
 
-public class insertEan extends AppCompatActivity {
+public class InsertEan extends AppCompatActivity {
 
     private MainViewModel mainViewModel;
     private EanViewModel eanViewModel;
@@ -64,7 +61,7 @@ public class insertEan extends AppCompatActivity {
     private void insertProduct(){
 
         //Create new ean object
-        ean newEan = new ean();
+        Ean newEan = new Ean();
         newEan.setEanId(ean);
         newEan.setName(addProductText.getText().toString());
 
@@ -77,6 +74,6 @@ public class insertEan extends AppCompatActivity {
 
         mainViewModel.insertInventorybyEan(ean);
 
-        startActivity(new Intent(insertEan.this, barcodeScanner.class));
+        startActivity(new Intent(InsertEan.this, BarcodeScanner.class));
     }
 }

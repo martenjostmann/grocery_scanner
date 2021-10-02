@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity(tableName = "inventory",
-        foreignKeys = @ForeignKey(entity = ean.class, parentColumns = "eanId", childColumns = "eanId", onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE))
-public class inventory {
+        foreignKeys = @ForeignKey(entity = Ean.class, parentColumns = "eanId", childColumns = "eanId", onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE))
+public class Inventory {
 
 
 

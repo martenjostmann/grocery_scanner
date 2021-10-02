@@ -12,22 +12,28 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
 
 
 public class FilterBottomSheet extends BottomSheetDialogFragment {
 
-    private MaterialButton bnt_use;
-    private MaterialButton btn_date;
-    private MaterialButton btn_alpha;
-    private Boolean useFilter;
-    private Boolean dateFilter;
-    private Boolean alphaFilter;
+    private MaterialButtonToggleGroup sortToggleButtonR1;
+    private MaterialButtonToggleGroup sortToggleButtonR2;
+    private MaterialButtonToggleGroup groupToggleButtonR1;
+    private MaterialButtonToggleGroup groupToggleButtonR2;
+    private MaterialButtonToggleGroup.OnButtonCheckedListener sortR1Listener;
+    private MaterialButtonToggleGroup.OnButtonCheckedListener sortR2Listener;
+    private MaterialButtonToggleGroup.OnButtonCheckedListener groupR1Listener;
+    private MaterialButtonToggleGroup.OnButtonCheckedListener groupR2Listener;
+
     private BottomSheetListener mListener;
     private FloatingActionButton btn_send;
-
+    private Sort sort;
+    private Group _group;
 
     @Nullable
     @Override
@@ -40,67 +46,114 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        useFilter = false;
-        dateFilter = false;
-        alphaFilter = true;
-
-        bnt_use = getView().findViewById(R.id.bnt_use);
-        btn_date = getView().findViewById(R.id.btn_date);
-        btn_alpha = getView().findViewById(R.id.btn_alpha);
+        // Define Buttons
         btn_send = getView().findViewById(R.id.btn_send);
 
+        // Sort Buttons
+        sortToggleButtonR1 = view.findViewById(R.id.sortToggleButtonR1);
+        sortToggleButtonR2 = view.findViewById(R.id.sortToggleButtonR2);
 
-        bnt_use.setOnClickListener(new View.OnClickListener() {
+        // Group Buttons
+        groupToggleButtonR1 = view.findViewById(R.id.groupToggleButtonR1);
+        groupToggleButtonR2 = view.findViewById(R.id.groupToggleButtonR2);
+
+
+        // Sort Listeners
+        sortR1Listener = new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
-            public void onClick(View v) {
-                alphaFilter = false;
-                dateFilter = true;
-                useFilter = false;
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
 
-                bnt_use.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                bnt_use.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.transparent));
-                btn_date.setTextColor(getResources().getColor(R.color.white));
-                btn_date.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_alpha.setTextColor(getResources().getColor(R.color.white));
-                btn_alpha.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
+                // Control single select over multiple Toggle Groups
+                sortToggleButtonR2.removeOnButtonCheckedListener(sortR2Listener);
+                sortToggleButtonR2.clearChecked();
+                sortToggleButtonR2.addOnButtonCheckedListener(sortR2Listener);
+
+                if (isChecked) {
+                    if(checkedId == R.id.dateDESC){
+                        sort = Sort.dateDESC;
+                    }else if(checkedId == R.id.dateASC){
+                        sort = Sort.dateASC;
+                    }
+                }
             }
-        });
+        };
 
-        btn_date.setOnClickListener(new View.OnClickListener() {
+        sortR2Listener = new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
-            public void onClick(View v) {
-                alphaFilter = false;
-                dateFilter = true;
-                useFilter = false;
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
 
-                bnt_use.setTextColor(getResources().getColor(R.color.white));
-                bnt_use.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_date.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                btn_date.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.transparent));
-                btn_alpha.setTextColor(getResources().getColor(R.color.white));
-                btn_alpha.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
+                // Control single select over multiple Toggle Groups
+                sortToggleButtonR1.removeOnButtonCheckedListener(sortR1Listener);
+                sortToggleButtonR1.clearChecked();
+                sortToggleButtonR1.addOnButtonCheckedListener(sortR1Listener);
+
+                if (isChecked) {
+                    if(checkedId == R.id.useDESC){
+                        sort = Sort.useDESC;
+                    }else if(checkedId == R.id.useASC){
+                        sort = Sort.useASC;
+                    }
+                }
             }
-        });
+        };
 
-        btn_alpha.setOnClickListener(new View.OnClickListener() {
+        // Group Listeners
+        groupR1Listener = new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
-            public void onClick(View v) {
-                alphaFilter = true;
-                dateFilter = false;
-                useFilter = false;
-                bnt_use.setTextColor(getResources().getColor(R.color.white));
-                bnt_use.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_date.setTextColor(getResources().getColor(R.color.white));
-                btn_date.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimaryDark));
-                btn_alpha.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                btn_alpha.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.transparent));
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+
+                // Control single select over multiple Toggle Groups
+                groupToggleButtonR2.removeOnButtonCheckedListener(groupR2Listener);
+                groupToggleButtonR2.clearChecked();
+                groupToggleButtonR2.addOnButtonCheckedListener(groupR2Listener);
+
+                if (isChecked) {
+                    if(checkedId == R.id.groupNull){
+                        _group = Group.none;
+                    }else if(checkedId == R.id.groupArticle){
+                        _group = Group.article;
+                    }
+                }
             }
-        });
+        };
+
+        groupR2Listener = new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+
+                // Control single select over multiple Toggle Groups
+                groupToggleButtonR1.removeOnButtonCheckedListener(groupR1Listener);
+                groupToggleButtonR1.clearChecked();
+                groupToggleButtonR1.addOnButtonCheckedListener(groupR1Listener);
+
+                if (isChecked) {
+                    if(checkedId == R.id.groupDate){
+                        _group = Group.date;
+                    }else if(checkedId == R.id.groupUse){
+                        _group = Group.use;
+                    }
+                }
+            }
+        };
+
+
+        // Add Listeners
+        sortToggleButtonR1.addOnButtonCheckedListener(sortR1Listener);
+        sortToggleButtonR2.addOnButtonCheckedListener(sortR2Listener);
+        groupToggleButtonR1.addOnButtonCheckedListener(groupR1Listener);
+        groupToggleButtonR2.addOnButtonCheckedListener(groupR2Listener);
+
+
+
 
         btn_send.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                mListener.onSendClicked("Hallo Test");
+
+                MainActivity activity = (MainActivity) getActivity();
+                InventoryFilter inventoryFilter = new InventoryFilter(sort, _group);
+
+                activity.onSendClicked(inventoryFilter);
                 dismiss();
             }
         });
@@ -110,7 +163,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
 
 
     public interface BottomSheetListener{
-        void onSendClicked(String text);
+        void onSendClicked(InventoryFilter filter);
     }
 
     @Override

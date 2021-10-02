@@ -201,4 +201,13 @@ public class inventoryFragment extends Fragment{
         }
     };
 
+    /**
+     * Apply filters from FilterBottomSheet.java
+     *
+     * @param filter InventoryFilter with necessary information to apply filters
+     * */
+    public void applyFilter(InventoryFilter filter){
+        System.out.println("Selected Filter " + filter.getSort());
+    }
+
 }

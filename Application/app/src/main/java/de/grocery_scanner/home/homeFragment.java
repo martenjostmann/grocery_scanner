@@ -40,6 +40,8 @@ public class homeFragment extends Fragment {
     private AppDatabase database;
     private List<inventoryEan> favouriteItems;
     private View view;
+    private TextView favouriteInnerContainerItemHeader;
+    private TextView favouriteInnerContainerItemText;
 
     public homeFragment() {
         // Required empty public constructor
@@ -69,24 +71,27 @@ public class homeFragment extends Fragment {
             }
         });
 
-        this.view = view;
+
+        favouriteContainerContent = view.findViewById(R.id.favouriteContainerContent);
 
         //display favourite items
         mainViewModel.getFavourite(3).observe(getViewLifecycleOwner(), new Observer<List<inventoryEan>>() {
             @Override
             public void onChanged(List<inventoryEan> favouriteItems) {
+
+                favouriteContainerContent.removeAllViews();
                 //iterate through all favourite items
                 for(inventoryEan item : favouriteItems){
-                    LinearLayout favouriteContainerContent = view.findViewById(R.id.favouriteContainerContent);
 
                     //get layout
                     View to_add = getLayoutInflater().inflate(R.layout.fragment_home_favourite_inner_container, favouriteContainerContent, false);
-                    TextView favouriteInnerContainerItemHeader = to_add.findViewById(R.id.favouriteInnerContainerItemHeader);
-                    TextView favouriteInnerContainerItemText = to_add.findViewById(R.id.favouriteInnerContainerItemText);
+                    favouriteInnerContainerItemHeader = to_add.findViewById(R.id.favouriteInnerContainerItemHeader);
+                    favouriteInnerContainerItemText = to_add.findViewById(R.id.favouriteInnerContainerItemText);
 
                     //setup layout
                     favouriteInnerContainerItemHeader.setText(String.valueOf(item.getName().toUpperCase().charAt(0)));
                     favouriteInnerContainerItemText.setText(item.getName());
+
 
                     //include layout
                     favouriteContainerContent.addView(to_add);

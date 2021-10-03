@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import de.grocery_scanner.AppDatabase;
 
+import de.grocery_scanner.inventory.filter.Sort;
 import de.grocery_scanner.viewmodel.MainViewModel;
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.elements.Inventory;
@@ -49,6 +51,7 @@ public class InventoryFragment extends Fragment{
     private RecyclerView inventoryList;
     private InventoryAdapter inventoryAdapter;
     private inventoryEan inventoryEanItem;
+    private Sort sort = Sort.dateDESC;
 
     public InventoryFragment() {
         // Required empty public constructor
@@ -91,6 +94,7 @@ public class InventoryFragment extends Fragment{
             @Override
             public void onChanged(List<inventoryEan> inventoryEans) {
                 inventoryAdapter.setInventory(inventoryEans);
+                inventoryAdapter.sortInventory(sort);   // Apply sort to updated list
             }
         });
 
@@ -126,7 +130,7 @@ public class InventoryFragment extends Fragment{
                     inventoryEanItem = inventoryAdapter.getInventoryAt(position);
                     mainViewModel.delete(mainViewModel.getItemById(inventoryEanItem.inventoryId)); //delete item from database
                     inventoryAdapter.removeInventoryAt(position);     //remove item from the list
-                    inventoryAdapter.notifyItemRemoved(position);   //notify the adapter that an item has changed
+
                     /*
                      * Undo the whole process
                      *
@@ -145,7 +149,6 @@ public class InventoryFragment extends Fragment{
                             inventoryItem.setUse(currenItem.getUse());
                             mainViewModel.insert(inventoryItem);
 
-                            inventoryAdapter.notifyItemInserted(position);
                         }
                     }).setActionTextColor(getResources().getColor(R.color.colorPrimary)).show();
 
@@ -159,9 +162,7 @@ public class InventoryFragment extends Fragment{
                     inventoryEanItem.use++;  //increase itemNumber
                     Inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);    //get current item out of the database
                     inventoryItem.setUse(inventoryEanItem.use);  //increase itemNumber
-
                     mainViewModel.update(inventoryItem);     //update item in the database
-                    inventoryAdapter.notifyDataSetChanged();    //notify the adapter that an item has changed
 
                     /*
                     * Undo the whole process
@@ -177,7 +178,6 @@ public class InventoryFragment extends Fragment{
                             inventoryItem.setUse(inventoryEanItem.use);
 
                             mainViewModel.update(inventoryItem);
-                            inventoryAdapter.notifyDataSetChanged();
                         }
                     }).setActionTextColor(getResources().getColor(R.color.colorPrimary)).show();
                     break;
@@ -207,7 +207,8 @@ public class InventoryFragment extends Fragment{
      * @param filter InventoryFilter with necessary information to apply filters
      * */
     public void applyFilter(InventoryFilter filter){
-        System.out.println("Selected Filter " + filter.getSort());
+        sort = filter.getSort();
+        inventoryAdapter.sortInventory(sort);
     }
 
 }

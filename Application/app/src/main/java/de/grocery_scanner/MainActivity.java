@@ -18,6 +18,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,12 +27,15 @@ import de.grocery_scanner.home.HomeFragment;
 import de.grocery_scanner.inventory.filter.FilterBottomSheet;
 import de.grocery_scanner.inventory.InventoryFilter;
 import de.grocery_scanner.inventory.InventoryFragment;
+import de.grocery_scanner.inventory.filter.Group;
+import de.grocery_scanner.inventory.filter.Sort;
 
 
 public class MainActivity extends AppCompatActivity implements FilterBottomSheet.BottomSheetListener {
 
     private ViewPager mViewPager;
     private FloatingActionButton fab;
+    private InventoryFilter filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +166,12 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
             @Override
             public void onClick(View view){
                 if(position == 0){
-                    FilterBottomSheet bottomSheet = new FilterBottomSheet();
+
+                    if (filter == null) {
+                        filter = new InventoryFilter(Sort.dateDESC, Group.none);
+                    }
+
+                    FilterBottomSheet bottomSheet = new FilterBottomSheet(filter);
                     bottomSheet.show(getSupportFragmentManager(), "bottomSheet");
 
                 }else if (position == 1){
@@ -216,8 +225,17 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
         fab.startAnimation(shrink);
     }
 
+    /**
+     * Method to retrieve filter settings from FilterBottomSheet
+     *
+     * @param filter InventoryFilter with necessary information to apply filters
+     * */
     @Override
     public void onSendClicked(InventoryFilter filter) {
+
+        // Make filter settings available to other methods, so that it can be send back to FilterBottomSheet
+        this.filter = filter;
+
         FragmentManager fm = getSupportFragmentManager();
         InventoryFragment page = (InventoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager.getCurrentItem());
         page.applyFilter(filter);

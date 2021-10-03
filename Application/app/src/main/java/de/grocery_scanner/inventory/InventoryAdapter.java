@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import de.grocery_scanner.R;
+import de.grocery_scanner.inventory.filter.Sort;
 import de.grocery_scanner.persistence.dao.InventoryDAO;
 
 
@@ -74,6 +76,10 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         notifyDataSetChanged();
     }
 
+    public List<InventoryDAO.inventoryEan> getInventory() {
+        return inventory;
+    }
+
     public InventoryDAO.inventoryEan getInventoryAt(int position) {
         return inventory.get(position);
     }
@@ -84,6 +90,24 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     public InventoryDAO.inventoryEan removeInventoryAt(int position) {
         return inventory.remove(position);
+    }
+
+    public void sortInventory(Sort sort) {
+        switch (sort) {
+            case dateDESC:
+                inventory.sort((left, right) -> (int) (right.getInDate().getTime() - left.getInDate().getTime()));
+                break;
+            case dateASC:
+                inventory.sort((left, right) -> (int) (left.getInDate().getTime() - right.getInDate().getTime()));
+                break;
+            case useDESC:
+                inventory.sort((left, right) -> right.getUse() - left.getUse());
+                break;
+            case useASC:
+                inventory.sort((left, right) -> left.getUse() - right.getUse());
+                break;
+        }
+        notifyDataSetChanged();
     }
 
     private String transformDate(Date date){

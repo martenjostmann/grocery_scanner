@@ -60,7 +60,6 @@ public class BarcodeScanner extends AppCompatActivity {
     private String barcodeData;
 
     private String barCode;
-    private InventoryDAO inventoryDAO;
     private FloatingActionButton nextBtn;
 
 

@@ -36,9 +36,6 @@ public class HomeFragment extends Fragment {
 
     private MainViewModel mainViewModel;
     private LinearLayout favouriteContainerContent;
-    private InventoryDAO inventoryDAO;
-    private AppDatabase database;
-    private List<inventoryEan> favouriteItems;
     private View view;
     private TextView favouriteInnerContainerItemHeader;
     private TextView favouriteInnerContainerItemText;
@@ -100,17 +97,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-
-
-
-        //Set inventoryQuantity
-
-
     }
 
-    private void changetext(Integer inventoryQuantity){
-        System.out.println("update inventory quantity");
-        TextView inventoryContainerContent = view.findViewById(R.id.inventoryContainerContent);
-        inventoryContainerContent.setText(String.format(Locale.getDefault(), "%d", inventoryQuantity));
-    }
 }

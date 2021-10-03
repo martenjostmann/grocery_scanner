@@ -31,7 +31,9 @@ import java.util.List;
 
 import de.grocery_scanner.AppDatabase;
 
+import de.grocery_scanner.inventory.filter.Group;
 import de.grocery_scanner.inventory.filter.Sort;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
 import de.grocery_scanner.viewmodel.MainViewModel;
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.elements.Inventory;
@@ -45,13 +47,10 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 public class InventoryFragment extends Fragment{
 
     private MainViewModel mainViewModel;
-    private AppDatabase database;
-    private List<inventoryEan> inventory;
-    private inventoryEan[] inventoryArray;
     private RecyclerView inventoryList;
     private InventoryAdapter inventoryAdapter;
-    private inventoryEan inventoryEanItem;
     private Sort sort = Sort.dateDESC;
+    private Group group = Group.none;
 
     public InventoryFragment() {
         // Required empty public constructor
@@ -76,7 +75,7 @@ public class InventoryFragment extends Fragment{
 
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
-        inventory = new ArrayList<inventoryEan>();  //initialize inventory
+        List<inventoryEan> inventory = new ArrayList<inventoryEan>();  //initialize inventory
 
         inventoryAdapter = new InventoryAdapter(inventory);
 
@@ -127,7 +126,7 @@ public class InventoryFragment extends Fragment{
                     /*
                      * If the user swipes to the left direction the inventory item will be deleted
                      * */
-                    inventoryEanItem = inventoryAdapter.getInventoryAt(position);
+                    inventoryEan inventoryEanItem = inventoryAdapter.getInventoryAt(position);
                     mainViewModel.delete(mainViewModel.getItemById(inventoryEanItem.inventoryId)); //delete item from database
                     inventoryAdapter.removeInventoryAt(position);     //remove item from the list
 

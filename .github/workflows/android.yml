@@ -20,9 +20,9 @@ jobs:
         java-version: 11
         distribution: 'temurin'
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./Application/gradlew build
     - name: Upload APK
       uses: actions/upload-artifact@v2.2.4
       with:
         name: app
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: Application/app/build/outputs/apk/debug/app-debug.apk

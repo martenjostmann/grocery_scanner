@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -44,7 +46,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 
 
-public class InventoryFragment extends Fragment{
+public class InventoryFragment extends Fragment implements InventoryAdapter.OnItemListener {
 
     private MainViewModel mainViewModel;
     private RecyclerView inventoryList;
@@ -77,7 +79,7 @@ public class InventoryFragment extends Fragment{
 
         List<inventoryEan> inventory = new ArrayList<inventoryEan>();  //initialize inventory
 
-        inventoryAdapter = new InventoryAdapter(inventory);
+        inventoryAdapter = new InventoryAdapter(inventory, this);
 
         inventoryList = getView().findViewById(R.id.inventoryList);
         inventoryList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -101,7 +103,9 @@ public class InventoryFragment extends Fragment{
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(inventoryList);
 
+
     }
+
 
 
     /**
@@ -210,4 +214,10 @@ public class InventoryFragment extends Fragment{
         inventoryAdapter.sortInventory(sort);
     }
 
+    @Override
+    public void onItemClick(int position) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        InventoryDialog dialog = new InventoryDialog();
+        dialog.show(fragmentManager,"tag");
+    }
 }

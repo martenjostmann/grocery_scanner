@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,10 +23,12 @@ import de.grocery_scanner.persistence.dao.InventoryDAO;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
 
-    List<InventoryDAO.inventoryEan> inventory;
+    private List<InventoryDAO.inventoryEan> inventory;
+    private OnItemListener onItemListener;
 
-    public InventoryAdapter(List<InventoryDAO.inventoryEan> inventory) {
+    public InventoryAdapter(List<InventoryDAO.inventoryEan> inventory, OnItemListener onItemListener) {
         this.inventory = inventory;
+        this.onItemListener = onItemListener;
     }
 
     @NonNull
@@ -35,7 +38,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View rowView = inflater.inflate(R.layout.fragment_inventory_listitem, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(rowView);
+        ViewHolder viewHolder = new ViewHolder(rowView, onItemListener);
 
         return viewHolder;
     }
@@ -57,18 +60,30 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         return inventory.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView name, use, inDateText;
+        OnItemListener onItemListener;
 
-        public ViewHolder(@NonNull View itemView){
+        public ViewHolder(@NonNull View itemView, OnItemListener onItemListener){
             super(itemView);
 
             name = itemView.findViewById(R.id.name);
             use = itemView.findViewById(R.id.use);
             inDateText = itemView.findViewById(R.id.inDateText);
+            this.onItemListener = onItemListener;
+
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            onItemListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnItemListener{
+        void onItemClick(int position);
     }
 
     public void setInventory(List<InventoryDAO.inventoryEan> inventory) {

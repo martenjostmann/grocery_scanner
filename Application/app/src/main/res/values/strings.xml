@@ -20,6 +20,8 @@
     <string name="inventory_filter_group_none">Keine</string>
     <string name="inventory_filter_group_article">Artikel</string>
     <string name="inventory_filter_send">Bestätigen</string>
+    <string name="inventory_dialog_header">Details</string>
+    <string name="inventory_dialog_save">Speichern</string>
     <string name="insert_ean_header">Produkt ist nicht vorhanden</string>
     <string name="insert_ean_product_name">Produktname eingeben</string>
     <string name="home_inventory_container_header">Anzahl Artikel im Inventar</string>

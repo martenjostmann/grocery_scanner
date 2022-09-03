@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment {
     private MainViewModel mainViewModel;
     private LinearLayout favouriteContainerContent;
     private ConstraintLayout homeBGView;
+    private ConstraintLayout transparentBG;
     private TextView favouriteInnerContainerItemHeader;
     private TextView favouriteInnerContainerItemText;
 
@@ -60,6 +61,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
+        transparentBG = view.findViewById(R.id.transparentBG);
+
         // Close FAB when background of the Fragment was clicked
         homeBGView = (ConstraintLayout) view.findViewById(R.id.homeBGView);
         homeBGView.setOnTouchListener(new View.OnTouchListener() {
@@ -71,7 +74,6 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-
 
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
@@ -113,7 +115,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
 
+    public void toggleBackGround(boolean isFABOpen) {
+
+        if (isFABOpen) {
+            transparentBG.setVisibility(View.VISIBLE);
+            transparentBG.animate().alpha(0.5f);
+        }else {
+            transparentBG.animate().alpha(0).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    transparentBG.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
 }

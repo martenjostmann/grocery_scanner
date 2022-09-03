@@ -9,6 +9,17 @@
     android:background="@color/primaryBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/transparentBG"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparentBG"
+        android:alpha="0"
+        android:visibility="gone"
+        android:translationZ="5dp">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeBGView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

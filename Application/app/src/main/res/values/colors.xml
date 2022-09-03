@@ -11,4 +11,5 @@
     <color name="gray">#c4c4c4</color>
     <color name="black">#000000</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="transparentBG">#272727</color>
 </resources>

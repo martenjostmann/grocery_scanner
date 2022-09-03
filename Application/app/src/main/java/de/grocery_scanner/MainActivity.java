@@ -8,6 +8,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
     private LinearLayout fabLayout2;
     private InventoryFilter filter;
     private boolean isFABOpen = false;
+    private HomeFragment homeFragment;
+    private InventoryFragment inventoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
 
         setupViewPager(mViewPager);
         setupTabLayout(mViewPager);
+
     }
 
     @Override
@@ -95,8 +100,12 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
      * */
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InventoryFragment(), "Inventar");
-        adapter.addFragment(new HomeFragment(), "Home");
+
+        inventoryFragment = new InventoryFragment();
+        homeFragment = new HomeFragment();
+
+        adapter.addFragment(inventoryFragment, "Inventar");
+        adapter.addFragment(homeFragment, "Home");
         viewPager.setAdapter(adapter);
 
     }
@@ -232,6 +241,9 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
 
         isFABOpen=true;
 
+        //show transparent background
+        homeFragment.toggleBackGround(isFABOpen);
+
         //animation for fab 1
         fab.animate().rotationBy(180);
         fab1.animate().rotationBy(180);
@@ -251,6 +263,9 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
      */
     public void closeFABMenu(){
         isFABOpen=false;
+
+        //remove transparent background
+        homeFragment.toggleBackGround(isFABOpen);
 
         //animation for fab 1
         fab.animate().rotation(0);

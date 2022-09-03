@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,7 +52,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gruppe erstellen" />
+            android:text="Gruppe erstellen"
+            android:textColor="@color/white"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab2"
@@ -83,7 +83,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Artikel hinzufügen" />
+            android:text="Artikel hinzufügen"
+            android:textColor="@color/white"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1"

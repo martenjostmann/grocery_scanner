@@ -19,6 +19,7 @@ public class AppRepository {
     private InventoryDAO inventoryDAO;
     private LiveData<List<inventoryEan>> getInventory;
     private LiveData<Integer> inventoryQuantity;
+    private LiveData<List<EanDAO.ItemsWithCount>> itemsWithCount;
 
     public AppRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
@@ -26,6 +27,7 @@ public class AppRepository {
         inventoryDAO = database.getInventoryDAO();
         inventoryQuantity = inventoryDAO.inventoryQuantity();
         getInventory = inventoryDAO.getInventory();
+        itemsWithCount = eanDAO.getItemsWithCount();
     }
 
     public void insert(Inventory... items) {
@@ -118,6 +120,10 @@ public class AppRepository {
 
     public int checkIfEanEmpty() {
         return eanDAO.checkIfEanEmpty();
+    }
+
+    public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCount() {
+        return eanDAO.getItemsWithCount();
     }
 
     private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {

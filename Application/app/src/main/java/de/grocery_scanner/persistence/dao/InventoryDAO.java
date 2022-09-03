@@ -40,9 +40,8 @@ public interface InventoryDAO {
     @Query("SELECT count(*) FROM Inventory WHERE outDate IS null")
     public LiveData<Integer> inventoryQuantity();
 
-    @Query("Select  *, count(*) as \"frequencies\"  FROM Inventory INNER JOIN Ean USING (eanId)  Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
+    @Query("Select *, count(*) as \"frequencies\"  FROM Inventory INNER JOIN Ean USING (eanId) Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
     public LiveData<List<inventoryEan>> getFavourite(int limit);
-
 
     //Joined Tables class to access data
     static class inventoryEan {
@@ -82,4 +81,5 @@ public interface InventoryDAO {
             return allocationTime;
         }
     }
+
 }

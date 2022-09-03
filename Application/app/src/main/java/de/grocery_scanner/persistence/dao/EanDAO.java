@@ -1,12 +1,14 @@
 package de.grocery_scanner.persistence.dao;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 import de.grocery_scanner.persistence.elements.Ean;
@@ -33,4 +35,37 @@ public interface EanDAO {
 
     @Query("SELECT count(*) FROM Ean")
     public int checkIfEanEmpty();
+
+    @Query("SELECT eanId, name, COALESCE(numInInventory, 0) AS numInInventory FROM Ean LEFT JOIN (SELECT eanId, outDate, count(*) AS 'numInInventory' FROM INVENTORY WHERE outDate IS NULL GROUP BY eanId) USING (eanId)")
+    public LiveData<List<ItemsWithCount>> getItemsWithCount();
+
+    static class ItemsWithCount {
+        private String eanId;
+        private String name;
+        private int numInInventory;
+
+        public String getEanId() {
+            return eanId;
+        }
+
+        public void setEanId(String eanId) {
+            this.eanId = eanId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getNumInInventory() {
+            return numInInventory;
+        }
+
+        public void setNumInInventory(int numInInventory) {
+            this.numInInventory = numInInventory;
+        }
+    }
 }

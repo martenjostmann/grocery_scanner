@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".helper.insertean.InsertEan"></activity>
-
+        <activity
+            android:name=".actionMenu.AllItemsActivity"
+            android:label="@string/title_activity_all_items"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".helper.insertean.InsertEan" />
         <activity android:name=".helper.scanner.BarcodeScanner" />
         <activity
             android:name=".MainActivity"
@@ -27,8 +30,8 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
     </application>
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

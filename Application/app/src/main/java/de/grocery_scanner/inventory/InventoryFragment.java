@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
         mainViewModel.getInventory().observe(getViewLifecycleOwner(), new Observer<List<inventoryEan>>() {
             @Override
             public void onChanged(List<inventoryEan> inventoryEans) {
+                Log.i("InventoryFragment", "DATA UPDATED!!!");
                 inventoryAdapter.setInventory(inventoryEans);
                 inventoryAdapter.sortInventory(sort);   // Apply sort to updated list
             }

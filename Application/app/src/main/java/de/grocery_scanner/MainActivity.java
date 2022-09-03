@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import de.grocery_scanner.actionMenu.AllItemsActivity;
 import de.grocery_scanner.helper.scanner.BarcodeScanner;
 import de.grocery_scanner.home.HomeFragment;
 import de.grocery_scanner.inventory.filter.FilterBottomSheet;
@@ -85,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id == R.id.all_items) {
+            startActivity(new Intent(MainActivity.this, AllItemsActivity.class));
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

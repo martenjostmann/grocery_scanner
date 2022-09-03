@@ -20,6 +20,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.grocery_scanner.helper.scanner.BarcodeScanner;
@@ -35,7 +36,12 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
 
     private ViewPager mViewPager;
     private FloatingActionButton fab;
+    private FloatingActionButton fab1;
+    private FloatingActionButton fab2;
+    private LinearLayout fabLayout1;
+    private LinearLayout fabLayout2;
     private InventoryFilter filter;
+    private boolean isFABOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +54,14 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
         //initialize Objects
         mViewPager = (ViewPager) findViewById(R.id.pager);
         fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.fab1);
+        fab2 = findViewById(R.id.fab2);
+        fabLayout1 = findViewById(R.id.FABLayout1);
+        fabLayout2 = findViewById(R.id.FABLayout2);
 
         //FloatingActionButton OnClickListener
         fabOnClick(1);
+        fab1OnClick();
 
         setupViewPager(mViewPager);
         setupTabLayout(mViewPager);
@@ -130,6 +141,9 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
                 animateFab(tab.getPosition());
                 fabOnClick(tab.getPosition());
 
+                //close the fab menu on tab change
+                closeFABMenu();
+
                 if(tab.getPosition() == 0){
                     inventoryText.setHeight(50);
                 }else if(tab.getPosition() == 1){
@@ -175,9 +189,85 @@ public class MainActivity extends AppCompatActivity implements FilterBottomSheet
                     bottomSheet.show(getSupportFragmentManager(), "bottomSheet");
 
                 }else if (position == 1){
-                    startActivity(new Intent(MainActivity.this, BarcodeScanner.class));
+                    if (!isFABOpen) {
+                        showFABMenu();
+                    }else {
+                        closeFABMenu();
+                    }
+
                 }
 
+            }
+        });
+    }
+
+    /**
+     * OnClickListener for the first unfolded fab
+     */
+    private void fab1OnClick(){
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, BarcodeScanner.class));
+            }
+        });
+    }
+
+    /**
+     * When the back button was pressed the fab menu should be closed
+     */
+    @Override
+    public void onBackPressed() {
+        if (isFABOpen) {
+            closeFABMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * Method to open the FAB Menu with animations
+     */
+    public void showFABMenu(){
+
+        isFABOpen=true;
+
+        //animation for fab 1
+        fab.animate().rotationBy(180);
+        fab1.animate().rotationBy(180);
+        fabLayout1.setVisibility(View.VISIBLE);
+        fabLayout1.animate().alpha(1);
+
+        //animation for fab 2
+        fabLayout2.setVisibility(View.VISIBLE);
+        fabLayout2.setAlpha(1);
+        fabLayout2.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+
+
+    }
+
+    /**
+     * Method to close the FAB Menu with animations
+     */
+    public void closeFABMenu(){
+        isFABOpen=false;
+
+        //animation for fab 1
+        fab.animate().rotation(0);
+        fab1.animate().rotation(180);
+        fabLayout1.animate().alpha(0).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                fabLayout1.setVisibility(View.GONE);
+            }
+        });
+
+        //animation for fab 2
+        fabLayout2.animate().translationY(0);
+        fabLayout2.animate().alpha(0).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                fabLayout2.setVisibility(View.GONE);
             }
         });
     }

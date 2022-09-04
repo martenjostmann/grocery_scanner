@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".actionMenu.AllItemsActivity"
-            android:label="@string/title_activity_all_items"
+            android:label="@string/action_menu_all_items_all_items"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".helper.insertean.InsertEan" />
         <activity android:name=".helper.scanner.BarcodeScanner" />

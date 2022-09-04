@@ -20,6 +20,7 @@ public class AppRepository {
     private LiveData<List<inventoryEan>> getInventory;
     private LiveData<Integer> inventoryQuantity;
     private LiveData<List<EanDAO.ItemsWithCount>> itemsWithCount;
+    private LiveData<List<EanDAO.ItemsWithCount>> itemsWithCountSearch;
 
     public AppRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
@@ -124,6 +125,10 @@ public class AppRepository {
 
     public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCount() {
         return eanDAO.getItemsWithCount();
+    }
+
+    public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCountSearch(String name) {
+        return eanDAO.getItemsWithCountSearch(name);
     }
 
     private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {

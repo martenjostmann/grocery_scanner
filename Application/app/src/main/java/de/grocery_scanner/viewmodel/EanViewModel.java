@@ -55,4 +55,8 @@ public class EanViewModel extends AndroidViewModel {
     public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCount() {
         return itemsWithCount;
     }
+
+    public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCountSearch(String name) {
+        return repository.getItemsWithCountSearch(name);
+    }
 }

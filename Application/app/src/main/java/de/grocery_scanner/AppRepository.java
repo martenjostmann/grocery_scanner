@@ -8,15 +8,21 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import de.grocery_scanner.persistence.dao.ArticleGroupDAO;
 import de.grocery_scanner.persistence.dao.EanDAO;
 import de.grocery_scanner.persistence.dao.InventoryDAO;
+import de.grocery_scanner.persistence.dao.RecipeDAO;
+import de.grocery_scanner.persistence.elements.ArticleGroup;
 import de.grocery_scanner.persistence.elements.Ean;
 import de.grocery_scanner.persistence.elements.Inventory;
 import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.elements.Recipe;
 
 public class AppRepository {
     private EanDAO eanDAO;
     private InventoryDAO inventoryDAO;
+    private ArticleGroupDAO articleGroupDAO;
+    private RecipeDAO recipeDAO;
     private LiveData<List<inventoryEan>> getInventory;
     private LiveData<Integer> inventoryQuantity;
     private LiveData<List<EanDAO.ItemsWithCount>> itemsWithCount;
@@ -26,6 +32,9 @@ public class AppRepository {
         AppDatabase database = AppDatabase.getInstance(application);
         eanDAO = database.getEanDAO();
         inventoryDAO = database.getInventoryDAO();
+        articleGroupDAO = database.getArticleGroupDAO();
+        recipeDAO = database.getRecipeDAO();
+
         inventoryQuantity = inventoryDAO.inventoryQuantity();
         getInventory = inventoryDAO.getInventory();
         itemsWithCount = eanDAO.getItemsWithCount();
@@ -39,6 +48,14 @@ public class AppRepository {
         new InsertEanAsyncTask(eanDAO).execute(eans);
     }
 
+    public void insert(ArticleGroup... items) {
+        new InsertArticleGroupAsyncTask(articleGroupDAO).execute(items);
+    }
+
+    public void insert(Recipe... items) {
+        new InsertRecipeAsyncTask(recipeDAO).execute(items);
+    }
+
     public void update(Inventory... items) {
         new UpdateInventoryAsyncTask(inventoryDAO).execute(items);
     }
@@ -47,12 +64,28 @@ public class AppRepository {
         new UpdateEanAsyncTask(eanDAO).execute(eans);
     }
 
+    public void update(ArticleGroup... items) {
+        new UpdateArticleGroupAsyncTask(articleGroupDAO).execute(items);
+    }
+
+    public void update(Recipe... items) {
+        new UpdateRecipeAsyncTask(recipeDAO).execute(items);
+    }
+
     public void delete(Inventory item) {
         new DeleteInventoryAsyncTask(inventoryDAO).execute(item);
     }
 
     public void delete(Ean ean) {
         new DeleteEanAsyncTask(eanDAO).execute(ean);
+    }
+
+    public void delete(ArticleGroup item) {
+        new DeleteArticleGroupAsyncTask(articleGroupDAO).execute(item);
+    }
+
+    public void delete(Recipe item) {
+        new DeleteRecipeAsyncTask(recipeDAO).execute(item);
     }
 
     public LiveData<List<inventoryEan>> getInventory() {
@@ -135,7 +168,7 @@ public class AppRepository {
 
         private InventoryDAO inventoryDAO;
 
-        private  InsertInventoryAsyncTask(InventoryDAO inventoryDAO) {
+        private InsertInventoryAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
@@ -150,13 +183,43 @@ public class AppRepository {
 
         private EanDAO eanDAO;
 
-        private  InsertEanAsyncTask(EanDAO eanDAO) {
+        private InsertEanAsyncTask(EanDAO eanDAO) {
             this.eanDAO = eanDAO;
         }
 
         @Override
         protected Void doInBackground(Ean... eans) {
             eanDAO.insert(eans);
+            return null;
+        }
+    }
+
+    private static class InsertArticleGroupAsyncTask extends AsyncTask<ArticleGroup, Void, Void> {
+
+        private ArticleGroupDAO articleGroupDAO;
+
+        private InsertArticleGroupAsyncTask(ArticleGroupDAO articleGroupDAO) {
+            this.articleGroupDAO = articleGroupDAO;
+        }
+
+        @Override
+        protected Void doInBackground(ArticleGroup... items) {
+            articleGroupDAO.insert(items);
+            return null;
+        }
+    }
+
+    private static class InsertRecipeAsyncTask extends AsyncTask<Recipe, Void, Void> {
+
+        private RecipeDAO recipeDAO;
+
+        private InsertRecipeAsyncTask(RecipeDAO recipeDAO) {
+            this.recipeDAO = recipeDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Recipe... items) {
+            recipeDAO.insert(items);
             return null;
         }
     }
@@ -192,6 +255,36 @@ public class AppRepository {
         }
     }
 
+    private static class UpdateArticleGroupAsyncTask extends AsyncTask<ArticleGroup, Void, Void> {
+
+        private ArticleGroupDAO articleGroupDAO;
+
+        private UpdateArticleGroupAsyncTask(ArticleGroupDAO articleGroupDAO) {
+            this.articleGroupDAO = articleGroupDAO;
+        }
+
+        @Override
+        protected Void doInBackground(ArticleGroup... items) {
+            articleGroupDAO.update(items);
+            return null;
+        }
+    }
+
+    private static class UpdateRecipeAsyncTask extends AsyncTask<Recipe, Void, Void> {
+
+        private RecipeDAO recipeDAO;
+
+        private UpdateRecipeAsyncTask(RecipeDAO recipeDAO) {
+            this.recipeDAO = recipeDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Recipe... items) {
+            recipeDAO.update(items);
+            return null;
+        }
+    }
+
     private static class DeleteInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
 
         private InventoryDAO inventoryDAO;
@@ -218,6 +311,36 @@ public class AppRepository {
         @Override
         protected Void doInBackground(Ean... eans) {
             eanDAO.delete(eans[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteArticleGroupAsyncTask extends AsyncTask<ArticleGroup, Void, Void> {
+
+        private ArticleGroupDAO articleGroupDAO;
+
+        private DeleteArticleGroupAsyncTask(ArticleGroupDAO articleGroupDAO) {
+            this.articleGroupDAO = articleGroupDAO;
+        }
+
+        @Override
+        protected Void doInBackground(ArticleGroup... items) {
+            articleGroupDAO.delete(items[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteRecipeAsyncTask extends AsyncTask<Recipe, Void, Void> {
+
+        private RecipeDAO recipeDAO;
+
+        private DeleteRecipeAsyncTask(RecipeDAO recipeDAO) {
+            this.recipeDAO = recipeDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Recipe... items) {
+            recipeDAO.delete(items[0]);
             return null;
         }
     }

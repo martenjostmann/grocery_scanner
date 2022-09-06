@@ -7,13 +7,17 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import de.grocery_scanner.persistence.Converters;
+import de.grocery_scanner.persistence.dao.ArticleGroupDAO;
 import de.grocery_scanner.persistence.dao.EanDAO;
 import de.grocery_scanner.persistence.dao.InventoryDAO;
+import de.grocery_scanner.persistence.dao.RecipeDAO;
+import de.grocery_scanner.persistence.elements.ArticleGroup;
 import de.grocery_scanner.persistence.elements.Ean;
 import de.grocery_scanner.persistence.elements.Inventory;
+import de.grocery_scanner.persistence.elements.Recipe;
 
 
-@Database(entities = {Ean.class, Inventory.class}, version = 3)
+@Database(entities = {Ean.class, Inventory.class, ArticleGroup.class, Recipe.class}, version = 4)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -21,6 +25,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract EanDAO getEanDAO();
     public abstract InventoryDAO getInventoryDAO();
+    public abstract ArticleGroupDAO getArticleGroupDAO();
+    public abstract RecipeDAO getRecipeDAO();
 
     public static synchronized AppDatabase getInstance(Context context){
         if (instance == null){

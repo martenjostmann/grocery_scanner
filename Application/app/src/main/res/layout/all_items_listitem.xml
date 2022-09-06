@@ -61,8 +61,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/quantity_side_bar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:background="@drawable/round_outline_right"
         android:backgroundTint="@color/colorPrimary"
         android:orientation="vertical"

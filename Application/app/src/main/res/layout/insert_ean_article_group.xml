@@ -1,0 +1,70 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+     <com.google.android.material.textfield.TextInputLayout
+         android:id="@+id/textInputLayout"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         android:layout_weight="8.5"
+         android:layout_marginTop="8dp"
+         android:layout_marginBottom="8dp"
+         android:hint="Suchen..."
+         android:padding="12dp"
+         android:singleLine="true"
+         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+         >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:inputType="text"/>
+
+     </com.google.android.material.textfield.TextInputLayout>
+
+     <com.google.android.material.button.MaterialButton
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Neu"
+         android:id="@+id/add_group_button"
+         style="@style/Widget.MaterialComponents.Button.TextButton"
+         >
+
+     </com.google.android.material.button.MaterialButton>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="10dp"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.5">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+
+</LinearLayout>

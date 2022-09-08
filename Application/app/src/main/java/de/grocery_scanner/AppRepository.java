@@ -156,6 +156,10 @@ public class AppRepository {
         return eanDAO.checkIfEanEmpty();
     }
 
+    public LiveData<List<ArticleGroup>> getAllArticleGroups() {
+        return articleGroupDAO.getAllArticleGroups();
+    }
+
     public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCount() {
         return eanDAO.getItemsWithCount();
     }

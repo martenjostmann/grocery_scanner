@@ -1,8 +1,10 @@
 package de.grocery_scanner.persistence.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -13,7 +15,7 @@ import de.grocery_scanner.persistence.elements.ArticleGroup;
 
 @Dao
 public interface ArticleGroupDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insert(ArticleGroup... items);
 
     @Update
@@ -22,5 +24,5 @@ public interface ArticleGroupDAO {
     public void delete(ArticleGroup item);
 
     @Query("SELECT * FROM articleGroup")
-    public List<ArticleGroup> getAllArticleGroups();
+    public LiveData<List<ArticleGroup>> getAllArticleGroups();
 }

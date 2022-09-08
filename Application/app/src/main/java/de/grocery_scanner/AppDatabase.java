@@ -17,7 +17,7 @@ import de.grocery_scanner.persistence.elements.Inventory;
 import de.grocery_scanner.persistence.elements.Recipe;
 
 
-@Database(entities = {Ean.class, Inventory.class, ArticleGroup.class, Recipe.class}, version = 4)
+@Database(entities = {Ean.class, Inventory.class, ArticleGroup.class, Recipe.class}, version = 7)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
 

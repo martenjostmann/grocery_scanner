@@ -30,6 +30,8 @@
     <string name="main_menu_home">Home</string>
     <string name="main_menu_inventory">Inventar</string>
     <string name="title_activity_all_items">ScrollingActivity</string>
+    <string name="dialog_cancle">Abbrechen</string>
+    <string name="dialog_ok">Ok</string>
 
     <string name="action_menu_all_items_all_items">Alle Artikel</string>
     <string name="large_text">

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#039BE5</color>
     <color name="colorPrimaryDark">#3949AB</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#3949AB</color>
     <color name="colorBackground">#e1f5fe</color>
     <color name="reptile_green">#26de81</color>
     <color name="white">#FFFFFF</color>

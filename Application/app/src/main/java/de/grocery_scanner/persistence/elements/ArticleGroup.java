@@ -2,9 +2,10 @@ package de.grocery_scanner.persistence.elements;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "articleGroup")
+@Entity(tableName = "articleGroup", indices = {@Index(value = {"name"}, unique = true)})
 public class ArticleGroup {
     @PrimaryKey()
     @NonNull

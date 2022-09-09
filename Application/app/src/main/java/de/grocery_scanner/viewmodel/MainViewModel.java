@@ -26,15 +26,15 @@ public class MainViewModel extends AndroidViewModel {
         inventoryQuantity = repository.getInventoryQuantity();
     }
 
-    public void insert(Inventory... items) {
-        repository.insert(items);
+    public List<Long> insert(Inventory... items) {
+        return repository.insert(items);
     }
 
-    public void insertInventorybyGroupId(Long groupId){
+    public List<Long> insertInventorybyGroupId(Long groupId){
         Inventory inventoryItem = new Inventory();
         inventoryItem.setGroupId(groupId);
         inventoryItem.setInDate(new Date());
-        this.insert(inventoryItem);
+        return this.insert(inventoryItem);
     }
 
     public void update(Inventory... items) {

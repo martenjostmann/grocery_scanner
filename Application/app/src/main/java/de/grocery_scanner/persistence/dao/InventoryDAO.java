@@ -15,7 +15,7 @@ import de.grocery_scanner.persistence.elements.Inventory;
 @Dao
 public interface InventoryDAO {
     @Insert
-    public void insert(Inventory... items);
+    public List<Long> insert(Inventory... items);
 
     @Update
     public void update(Inventory... items);

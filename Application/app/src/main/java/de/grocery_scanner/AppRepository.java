@@ -40,8 +40,16 @@ public class AppRepository {
         itemsWithCount = articleGroupDAO.getItemsWithCount();
     }
 
-    public void insert(Inventory... items) {
-        new InsertInventoryAsyncTask(inventoryDAO).execute(items);
+    public List<Long> insert(Inventory... items) {
+        try {
+            return new InsertInventoryAsyncTask(inventoryDAO).execute(items).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void insert(Ean... eans) {
@@ -168,7 +176,7 @@ public class AppRepository {
         return articleGroupDAO.getItemsWithCountSearch(name);
     }
 
-    private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
+    private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, List<Long>> {
 
         private InventoryDAO inventoryDAO;
 
@@ -177,9 +185,13 @@ public class AppRepository {
         }
 
         @Override
-        protected Void doInBackground(Inventory... inventories) {
-            inventoryDAO.insert(inventories);
-            return null;
+        protected List<Long> doInBackground(Inventory... inventories) {
+            return inventoryDAO.insert(inventories);
+        }
+
+        @Override
+        protected void onPostExecute(List<Long> listLong) {
+            super.onPostExecute(listLong);
         }
     }
 

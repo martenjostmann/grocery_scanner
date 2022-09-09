@@ -13,6 +13,7 @@ import java.util.List;
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.dao.ArticleGroupDAO;
 import de.grocery_scanner.persistence.dao.EanDAO;
+import de.grocery_scanner.persistence.dao.InventoryDAO;
 
 
 public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHolder>{
@@ -71,6 +72,10 @@ public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHo
     public void setAllItems(List<ArticleGroupDAO.ItemsWithCount> itemsWithCount) {
         this.itemsWithCount = itemsWithCount;
         notifyDataSetChanged();
+    }
+
+    public ArticleGroupDAO.ItemsWithCount getItemsWithCountAt(int position) {
+        return itemsWithCount.get(position);
     }
 
     public interface OnItemListener{

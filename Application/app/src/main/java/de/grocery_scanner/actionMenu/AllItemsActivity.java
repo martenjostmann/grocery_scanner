@@ -39,13 +39,13 @@ import java.util.List;
 import de.grocery_scanner.MainActivity;
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.dao.InventoryDAO;
-import de.grocery_scanner.viewmodel.EanViewModel;
+import de.grocery_scanner.viewmodel.ArticleGroupViewModel;
 
-import de.grocery_scanner.persistence.dao.EanDAO.ItemsWithCount;
+import de.grocery_scanner.persistence.dao.ArticleGroupDAO.ItemsWithCount;
 
 public class AllItemsActivity extends AppCompatActivity implements AllItemsAdapter.OnItemListener {
 
-    private EanViewModel eanViewModel;
+    private ArticleGroupViewModel articleGroupViewModel;
     private RecyclerView allItemsList;
     private AllItemsAdapter allItemsAdapter;
     private String lastSearch;
@@ -85,7 +85,7 @@ public class AllItemsActivity extends AppCompatActivity implements AllItemsAdapt
     }
 
     private void afterCreate() {
-        eanViewModel =  ViewModelProviders.of(this).get(EanViewModel.class);
+        articleGroupViewModel =  ViewModelProviders.of(this).get(ArticleGroupViewModel.class);
 
         List<ItemsWithCount> itemsWithCount = new ArrayList<ItemsWithCount>();
 
@@ -101,7 +101,7 @@ public class AllItemsActivity extends AppCompatActivity implements AllItemsAdapt
         allItemsList.addItemDecoration(dividerItemDecoration);
 
         // Get Inventory Items out of the database and watch changes
-        eanViewModel.getItemsWithCount().observe(this, new Observer<List<ItemsWithCount>>() {
+        articleGroupViewModel.getItemsWithCount().observe(this, new Observer<List<ItemsWithCount>>() {
             @Override
             public void onChanged(List<ItemsWithCount> itemsWithCount) {
                 allItemsAdapter.setAllItems(itemsWithCount);
@@ -202,7 +202,7 @@ public class AllItemsActivity extends AppCompatActivity implements AllItemsAdapt
 
 
     public void search(String name) {
-        eanViewModel.getItemsWithCountSearch(name).observe(AllItemsActivity.this, new Observer<List<ItemsWithCount>>() {
+        articleGroupViewModel.getItemsWithCountSearch(name).observe(AllItemsActivity.this, new Observer<List<ItemsWithCount>>() {
             @Override
             public void onChanged(List<ItemsWithCount> itemsWithCounts) {
                 allItemsAdapter.setAllItems(itemsWithCounts);

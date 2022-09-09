@@ -15,7 +15,7 @@ import de.grocery_scanner.persistence.dao.RecipeDAO;
 import de.grocery_scanner.persistence.elements.ArticleGroup;
 import de.grocery_scanner.persistence.elements.Ean;
 import de.grocery_scanner.persistence.elements.Inventory;
-import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.dao.InventoryDAO.InventoryArticleGroup;
 import de.grocery_scanner.persistence.elements.Recipe;
 
 public class AppRepository {
@@ -23,10 +23,10 @@ public class AppRepository {
     private InventoryDAO inventoryDAO;
     private ArticleGroupDAO articleGroupDAO;
     private RecipeDAO recipeDAO;
-    private LiveData<List<inventoryEan>> getInventory;
+    private LiveData<List<InventoryArticleGroup>> getInventory;
     private LiveData<Integer> inventoryQuantity;
-    private LiveData<List<EanDAO.ItemsWithCount>> itemsWithCount;
-    private LiveData<List<EanDAO.ItemsWithCount>> itemsWithCountSearch;
+    private LiveData<List<ArticleGroupDAO.ItemsWithCount>> itemsWithCount;
+    private LiveData<List<ArticleGroupDAO.ItemsWithCount>> itemsWithCountSearch;
 
     public AppRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
@@ -37,7 +37,7 @@ public class AppRepository {
 
         inventoryQuantity = inventoryDAO.inventoryQuantity();
         getInventory = inventoryDAO.getInventory();
-        itemsWithCount = eanDAO.getItemsWithCount();
+        itemsWithCount = articleGroupDAO.getItemsWithCount();
     }
 
     public void insert(Inventory... items) {
@@ -88,7 +88,7 @@ public class AppRepository {
         new DeleteRecipeAsyncTask(recipeDAO).execute(item);
     }
 
-    public LiveData<List<inventoryEan>> getInventory() {
+    public LiveData<List<InventoryArticleGroup>> getInventory() {
         return getInventory;
     }
 
@@ -104,9 +104,9 @@ public class AppRepository {
         return null;
     }
 
-    public Inventory getItemByEanId(String ean) {
+    public Inventory getItemByGroupId(Long groupId) {
         try {
-            return new getItemByEanIdAsyncTask(inventoryDAO).execute(ean).get();
+            return new getItemByGroupIdAsyncTask(inventoryDAO).execute(groupId).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -132,7 +132,7 @@ public class AppRepository {
         return inventoryDAO.checkIfEmpty();
     }
 
-    public LiveData<List<inventoryEan>> getFavourite(int limit) {
+    public LiveData<List<InventoryArticleGroup>> getFavourite(int limit) {
         return inventoryDAO.getFavourite(limit);
     }
 
@@ -160,12 +160,12 @@ public class AppRepository {
         return articleGroupDAO.getAllArticleGroups();
     }
 
-    public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCount() {
-        return eanDAO.getItemsWithCount();
+    public LiveData<List<ArticleGroupDAO.ItemsWithCount>> getItemsWithCount() {
+        return articleGroupDAO.getItemsWithCount();
     }
 
-    public LiveData<List<EanDAO.ItemsWithCount>> getItemsWithCountSearch(String name) {
-        return eanDAO.getItemsWithCountSearch(name);
+    public LiveData<List<ArticleGroupDAO.ItemsWithCount>> getItemsWithCountSearch(String name) {
+        return articleGroupDAO.getItemsWithCountSearch(name);
     }
 
     private static class InsertInventoryAsyncTask extends AsyncTask<Inventory, Void, Void> {
@@ -370,17 +370,17 @@ public class AppRepository {
 
 
 
-    private static class getItemByEanIdAsyncTask extends AsyncTask<String, Void, Inventory> {
+    private static class getItemByGroupIdAsyncTask extends AsyncTask<Long, Void, Inventory> {
 
         private InventoryDAO inventoryDAO;
 
-        private getItemByEanIdAsyncTask(InventoryDAO inventoryDAO) {
+        private getItemByGroupIdAsyncTask(InventoryDAO inventoryDAO) {
             this.inventoryDAO = inventoryDAO;
         }
 
         @Override
-        protected Inventory doInBackground(String... ean) {
-            return inventoryDAO.getItemByEanId(ean[0]);
+        protected Inventory doInBackground(Long... groupId) {
+            return inventoryDAO.getItemByGroupId(groupId[0]);
         }
 
         @Override

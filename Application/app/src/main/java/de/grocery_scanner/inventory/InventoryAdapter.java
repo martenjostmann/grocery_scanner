@@ -23,10 +23,10 @@ import de.grocery_scanner.persistence.dao.InventoryDAO;
 
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
 
-    private List<InventoryDAO.inventoryEan> inventory;
+    private List<InventoryDAO.InventoryArticleGroup> inventory;
     private OnItemListener onItemListener;
 
-    public InventoryAdapter(List<InventoryDAO.inventoryEan> inventory, OnItemListener onItemListener) {
+    public InventoryAdapter(List<InventoryDAO.InventoryArticleGroup> inventory, OnItemListener onItemListener) {
         this.inventory = inventory;
         this.onItemListener = onItemListener;
     }
@@ -86,24 +86,24 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         void onItemClick(int position);
     }
 
-    public void setInventory(List<InventoryDAO.inventoryEan> inventory) {
+    public void setInventory(List<InventoryDAO.InventoryArticleGroup> inventory) {
         this.inventory = inventory;
         notifyDataSetChanged();
     }
 
-    public List<InventoryDAO.inventoryEan> getInventory() {
+    public List<InventoryDAO.InventoryArticleGroup> getInventory() {
         return inventory;
     }
 
-    public InventoryDAO.inventoryEan getInventoryAt(int position) {
+    public InventoryDAO.InventoryArticleGroup getInventoryAt(int position) {
         return inventory.get(position);
     }
 
-    public void addInventoryAt(int position, InventoryDAO.inventoryEan inventoryItem) {
+    public void addInventoryAt(int position, InventoryDAO.InventoryArticleGroup inventoryItem) {
         inventory.add(position, inventoryItem);
     }
 
-    public InventoryDAO.inventoryEan removeInventoryAt(int position) {
+    public InventoryDAO.InventoryArticleGroup removeInventoryAt(int position) {
         return inventory.remove(position);
     }
 

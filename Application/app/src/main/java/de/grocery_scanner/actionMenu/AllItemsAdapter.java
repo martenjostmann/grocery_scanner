@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.grocery_scanner.R;
+import de.grocery_scanner.persistence.dao.ArticleGroupDAO;
 import de.grocery_scanner.persistence.dao.EanDAO;
 
 
 public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHolder>{
 
-    private List<EanDAO.ItemsWithCount> itemsWithCount;
+    private List<ArticleGroupDAO.ItemsWithCount> itemsWithCount;
     private OnItemListener onItemListener;
 
-    public AllItemsAdapter(List<EanDAO.ItemsWithCount> itemsWithCount, OnItemListener onItemListener) {
+    public AllItemsAdapter(List<ArticleGroupDAO.ItemsWithCount> itemsWithCount, OnItemListener onItemListener) {
         this.itemsWithCount = itemsWithCount;
         this.onItemListener = onItemListener;
     }
@@ -67,7 +68,7 @@ public class AllItemsAdapter extends RecyclerView.Adapter<AllItemsAdapter.ViewHo
         }
     }
 
-    public void setAllItems(List<EanDAO.ItemsWithCount> itemsWithCount) {
+    public void setAllItems(List<ArticleGroupDAO.ItemsWithCount> itemsWithCount) {
         this.itemsWithCount = itemsWithCount;
         notifyDataSetChanged();
     }

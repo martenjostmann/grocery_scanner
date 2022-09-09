@@ -9,17 +9,20 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import de.grocery_scanner.AppRepository;
+import de.grocery_scanner.persistence.dao.ArticleGroupDAO;
 import de.grocery_scanner.persistence.elements.ArticleGroup;
 import de.grocery_scanner.persistence.elements.Recipe;
 
 public class ArticleGroupViewModel extends AndroidViewModel {
 
     private AppRepository repository;
+    private LiveData<List<ArticleGroupDAO.ItemsWithCount>> itemsWithCount;
 
     public ArticleGroupViewModel(@NonNull Application application) {
         super(application);
 
         repository = new AppRepository(application);
+        itemsWithCount = repository.getItemsWithCount();
     }
 
     public void insert(ArticleGroup... items) {
@@ -36,5 +39,13 @@ public class ArticleGroupViewModel extends AndroidViewModel {
 
     public LiveData<List<ArticleGroup>> getAllArticleGroups() {
         return repository.getAllArticleGroups();
+    }
+
+    public LiveData<List<ArticleGroupDAO.ItemsWithCount>> getItemsWithCount() {
+        return itemsWithCount;
+    }
+
+    public LiveData<List<ArticleGroupDAO.ItemsWithCount>> getItemsWithCountSearch(String name) {
+        return repository.getItemsWithCountSearch(name);
     }
 }

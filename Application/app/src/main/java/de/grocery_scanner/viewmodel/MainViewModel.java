@@ -16,7 +16,7 @@ import de.grocery_scanner.persistence.elements.Inventory;
 public class MainViewModel extends AndroidViewModel {
 
     private AppRepository repository;
-    private LiveData<List<InventoryDAO.inventoryEan>> getInventory;
+    private LiveData<List<InventoryDAO.InventoryArticleGroup>> getInventory;
     private LiveData<Integer> inventoryQuantity;
 
     public MainViewModel(@NonNull Application application) {
@@ -30,9 +30,9 @@ public class MainViewModel extends AndroidViewModel {
         repository.insert(items);
     }
 
-    public void insertInventorybyEan(String barCode){
+    public void insertInventorybyGroupId(Long groupId){
         Inventory inventoryItem = new Inventory();
-        inventoryItem.setEanId(barCode);
+        inventoryItem.setGroupId(groupId);
         inventoryItem.setInDate(new Date());
         this.insert(inventoryItem);
     }
@@ -49,7 +49,7 @@ public class MainViewModel extends AndroidViewModel {
         return inventoryQuantity;
     }
 
-    public LiveData<List<InventoryDAO.inventoryEan>> getInventory() {
+    public LiveData<List<InventoryDAO.InventoryArticleGroup>> getInventory() {
         return getInventory;
     }
 
@@ -57,8 +57,8 @@ public class MainViewModel extends AndroidViewModel {
         return repository.getItembyId(id);
     }
 
-    public Inventory getItemByEanId(String ean) {
-        return repository.getItemByEanId(ean);
+    public Inventory getItemByEanId(Long groupId) {
+        return repository.getItemByGroupId(groupId);
     }
 
     public int checkInventory(String id) {
@@ -69,7 +69,7 @@ public class MainViewModel extends AndroidViewModel {
         return repository.checkIfEmpty();
     }
 
-    public LiveData<List<InventoryDAO.inventoryEan>> getFavourite(int limit) {
+    public LiveData<List<InventoryDAO.InventoryArticleGroup>> getFavourite(int limit) {
         return repository.getFavourite(limit);
     }
 }

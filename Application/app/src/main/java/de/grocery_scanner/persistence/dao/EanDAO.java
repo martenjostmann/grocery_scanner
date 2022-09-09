@@ -36,42 +36,4 @@ public interface EanDAO {
     @Query("SELECT count(*) FROM Ean")
     public int checkIfEanEmpty();
 
-    @Query("SELECT eanId, name, COALESCE(numInInventory, 0) AS numInInventory FROM Ean LEFT JOIN (SELECT eanId, outDate, count(*) AS 'numInInventory' FROM INVENTORY WHERE outDate IS NULL GROUP BY eanId) USING (eanId)")
-    public LiveData<List<ItemsWithCount>> getItemsWithCount();
-
-    @Query("SELECT eanId, name, COALESCE(numInInventory, 0) AS numInInventory " +
-            "FROM Ean LEFT JOIN (SELECT eanId, outDate, count(*) AS 'numInInventory' FROM INVENTORY WHERE outDate IS NULL GROUP BY eanId) " +
-            "USING (eanId)" +
-            "WHERE name LIKE '%' || :name || '%'")
-    public LiveData<List<ItemsWithCount>> getItemsWithCountSearch(String name);
-
-    static class ItemsWithCount {
-        private String eanId;
-        private String name;
-        private int numInInventory;
-
-        public String getEanId() {
-            return eanId;
-        }
-
-        public void setEanId(String eanId) {
-            this.eanId = eanId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getNumInInventory() {
-            return numInInventory;
-        }
-
-        public void setNumInInventory(int numInInventory) {
-            this.numInInventory = numInInventory;
-        }
-    }
 }

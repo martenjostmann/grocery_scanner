@@ -33,7 +33,7 @@ import de.grocery_scanner.persistence.dao.InventoryDAO;
 import de.grocery_scanner.viewmodel.MainViewModel;
 import de.grocery_scanner.R;
 
-import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.dao.InventoryDAO.InventoryArticleGroup;
 
 
 public class HomeFragment extends Fragment {
@@ -91,13 +91,13 @@ public class HomeFragment extends Fragment {
         favouriteContainerContent = view.findViewById(R.id.favouriteContainerContent);
 
         //display favourite items
-        mainViewModel.getFavourite(3).observe(getViewLifecycleOwner(), new Observer<List<inventoryEan>>() {
+        mainViewModel.getFavourite(3).observe(getViewLifecycleOwner(), new Observer<List<InventoryArticleGroup>>() {
             @Override
-            public void onChanged(List<inventoryEan> favouriteItems) {
+            public void onChanged(List<InventoryArticleGroup> favouriteItems) {
 
                 favouriteContainerContent.removeAllViews();
                 //iterate through all favourite items
-                for(inventoryEan item : favouriteItems){
+                for(InventoryArticleGroup item : favouriteItems){
 
                     //get layout
                     View to_add = getLayoutInflater().inflate(R.layout.fragment_home_favourite_inner_container, favouriteContainerContent, false);

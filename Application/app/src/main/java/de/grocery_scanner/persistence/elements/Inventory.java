@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity(tableName = "inventory",
-        foreignKeys = @ForeignKey(entity = Ean.class, parentColumns = "eanId", childColumns = "eanId", onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE))
+        foreignKeys = @ForeignKey(entity = ArticleGroup.class, parentColumns = "groupId", childColumns = "groupId", onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE))
 public class Inventory {
 
 
@@ -20,7 +20,7 @@ public class Inventory {
     private int inventoryId;
 
     @NonNull
-    private String eanId;
+    private Long groupId;
 
     @NonNull
     private Date inDate;
@@ -40,8 +40,12 @@ public class Inventory {
     }
 
     @NonNull
-    public String getEanId() {
-        return eanId;
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(@NonNull Long groupId) {
+        this.groupId = groupId;
     }
 
     @NonNull
@@ -66,9 +70,6 @@ public class Inventory {
         this.inventoryId = inventoryId;
     }
 
-    public void setEanId(@NonNull String eanId) {
-        this.eanId = eanId;
-    }
 
     public void setInDate(@NonNull Date inDate) {
         this.inDate = inDate;

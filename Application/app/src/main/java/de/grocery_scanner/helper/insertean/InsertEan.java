@@ -184,6 +184,7 @@ public class InsertEan extends AppCompatActivity implements ArticleGroupAdapter.
         //Create new ean object
         Ean newEan = new Ean();
         newEan.setEanId(ean);
+        newEan.setGroupId(selectedGroup.getGroupId());
         newEan.setName(addProductText.getText().toString());
 
         //Insert newEan into database
@@ -193,7 +194,7 @@ public class InsertEan extends AppCompatActivity implements ArticleGroupAdapter.
         Toast toast = Toast.makeText(this, "Produkt hinzugefügt", Toast.LENGTH_LONG);
         toast.show();
 
-        mainViewModel.insertInventorybyEan(ean);
+        mainViewModel.insertInventorybyGroupId(selectedGroup.getGroupId());
 
         startActivity(new Intent(InsertEan.this, BarcodeScanner.class));
     }
@@ -201,7 +202,6 @@ public class InsertEan extends AppCompatActivity implements ArticleGroupAdapter.
 
     @Override
     public void onItemClick(ArticleGroup articleGroup) {
-        Log.d("TAG", "onItemClick: CHANGED!!!!!");
         selectedGroup = articleGroup;
         articleGroupAdapter.notifyDataSetChanged();
         textInputEditText.clearFocus();

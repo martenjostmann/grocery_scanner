@@ -41,7 +41,7 @@ import de.grocery_scanner.viewmodel.MainViewModel;
 import de.grocery_scanner.R;
 import de.grocery_scanner.persistence.elements.Inventory;
 
-import de.grocery_scanner.persistence.dao.InventoryDAO.inventoryEan;
+import de.grocery_scanner.persistence.dao.InventoryDAO.InventoryArticleGroup;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 
@@ -78,7 +78,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
 
         mainViewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
 
-        List<inventoryEan> inventory = new ArrayList<inventoryEan>();  //initialize inventory
+        List<InventoryArticleGroup> inventory = new ArrayList<InventoryArticleGroup>();  //initialize inventory
 
         inventoryAdapter = new InventoryAdapter(inventory, this);
 
@@ -92,11 +92,11 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
         inventoryList.addItemDecoration(dividerItemDecoration);
 
         // Get Inventory Items out of the database and watch changes
-        mainViewModel.getInventory().observe(getViewLifecycleOwner(), new Observer<List<inventoryEan>>() {
+        mainViewModel.getInventory().observe(getViewLifecycleOwner(), new Observer<List<InventoryArticleGroup>>() {
             @Override
-            public void onChanged(List<inventoryEan> inventoryEans) {
-                Log.i("InventoryFragment", "DATA UPDATED!!!");
-                inventoryAdapter.setInventory(inventoryEans);
+            public void onChanged(List<InventoryArticleGroup> inventoryArticleGroups) {
+
+                inventoryAdapter.setInventory(inventoryArticleGroups);
                 inventoryAdapter.sortInventory(sort);   // Apply sort to updated list
             }
         });
@@ -113,7 +113,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
     /**
     * Add swipe actions to inventoryList
     * */
-    private inventoryEan currenItem = null;
+    private InventoryArticleGroup currenItem = null;
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
@@ -132,8 +132,8 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
                     /*
                      * If the user swipes to the left direction the inventory item will be deleted
                      * */
-                    inventoryEan inventoryEanItem = inventoryAdapter.getInventoryAt(position);
-                    mainViewModel.delete(mainViewModel.getItemById(inventoryEanItem.inventoryId)); //delete item from database
+                    InventoryArticleGroup inventoryArticleGroupItem = inventoryAdapter.getInventoryAt(position);
+                    mainViewModel.delete(mainViewModel.getItemById(inventoryArticleGroupItem.inventoryId)); //delete item from database
                     inventoryAdapter.removeInventoryAt(position);     //remove item from the list
 
                     /*
@@ -148,7 +148,7 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
 
                             //create inventory with currentItem Object
                             Inventory inventoryItem = new Inventory();
-                            inventoryItem.setEanId(currenItem.getEanId());
+                            inventoryItem.setGroupId(currenItem.getGroupId());
                             inventoryItem.setInDate(currenItem.getInDate());
                             inventoryItem.setInventoryId(currenItem.getInventoryId());
                             inventoryItem.setUse(currenItem.getUse());
@@ -163,10 +163,10 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
                     * If the user swipes to the right direction the inventory item will be used (use increase)
                     * */
 
-                    inventoryEanItem = inventoryAdapter.getInventoryAt(position);
-                    inventoryEanItem.use++;  //increase itemNumber
-                    Inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);    //get current item out of the database
-                    inventoryItem.setUse(inventoryEanItem.use);  //increase itemNumber
+                    inventoryArticleGroupItem = inventoryAdapter.getInventoryAt(position);
+                    inventoryArticleGroupItem.use++;  //increase itemNumber
+                    Inventory inventoryItem = mainViewModel.getItemById(inventoryArticleGroupItem.inventoryId);    //get current item out of the database
+                    inventoryItem.setUse(inventoryArticleGroupItem.use);  //increase itemNumber
                     mainViewModel.update(inventoryItem);     //update item in the database
 
                     /*
@@ -177,10 +177,10 @@ public class InventoryFragment extends Fragment implements InventoryAdapter.OnIt
                     Snackbar.make(inventoryList, currenItem.getName(), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            inventoryEan inventoryEanItem = inventoryAdapter.getInventoryAt(position);
-                            inventoryEanItem.use--;
-                            Inventory inventoryItem = mainViewModel.getItemById(inventoryEanItem.inventoryId);
-                            inventoryItem.setUse(inventoryEanItem.use);
+                            InventoryArticleGroup inventoryArticleGroupItem = inventoryAdapter.getInventoryAt(position);
+                            inventoryArticleGroupItem.use--;
+                            Inventory inventoryItem = mainViewModel.getItemById(inventoryArticleGroupItem.inventoryId);
+                            inventoryItem.setUse(inventoryArticleGroupItem.use);
 
                             mainViewModel.update(inventoryItem);
                         }

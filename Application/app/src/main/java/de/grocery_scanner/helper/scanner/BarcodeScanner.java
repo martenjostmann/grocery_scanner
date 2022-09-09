@@ -180,9 +180,10 @@ public class BarcodeScanner extends AppCompatActivity {
                             int countEntries = eanViewModel.checkEan(barCode);
 
                             if (countEntries != 0) {
-                                String productName = eanViewModel.getItemById(barCode).getName();
+                                Ean ean = eanViewModel.getItemById(barCode);
+                                String productName = ean.getName();
                                 barcodeText.setText(productName);
-                                mainViewModel.insertInventorybyEan(barCode);
+                                mainViewModel.insertInventorybyGroupId(ean.getGroupId());
                             } else {
                                 EanDatabase eanD = new EanDatabase(barCode, "http://opengtindb.org/", getApplicationContext());
                                 eanD.getProduct(new VolleyCallback() {
@@ -193,11 +194,13 @@ public class BarcodeScanner extends AppCompatActivity {
                                             barcodeText.setText(result);
 
                                             //insert product into database
-                                            Ean newEan = new Ean();
+                                         /*   Ean newEan = new Ean();
                                             newEan.setEanId(barCode);
                                             newEan.setName(result);
                                             eanViewModel.insert(newEan);
-                                            mainViewModel.insertInventorybyEan(barCode);
+                                            mainViewModel.insertInventorybyEan(barCode);*/
+
+                                            insertEan();
                                         } else {
                                             insertEan();
                                         }

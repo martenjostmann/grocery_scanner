@@ -22,14 +22,14 @@ public interface InventoryDAO {
     @Delete
     public void delete(Inventory item);
 
-    @Query("SELECT * " + "FROM Inventory " + "INNER JOIN Ean USING (eanId)" + "ORDER BY inDate DESC")
-    public LiveData<List<inventoryEan>> getInventory();
+    @Query("SELECT * " + "FROM Inventory " + "INNER JOIN ArticleGroup USING (groupId)" + "ORDER BY inDate DESC")
+    public LiveData<List<InventoryArticleGroup>> getInventory();
 
     @Query("SELECT * FROM Inventory WHERE inventoryId = :id")
     public Inventory getItemById(int id);
 
-    @Query("SELECT * FROM Inventory WHERE eanId = :ean")
-    public Inventory getItemByEanId(String ean);
+    @Query("SELECT * FROM Inventory WHERE groupId = :groupId")
+    public Inventory getItemByGroupId(Long groupId);
 
     @Query("SELECT count(*) FROM Inventory WHERE inventoryId = :id")
     public int checkInventory(String id);
@@ -40,12 +40,13 @@ public interface InventoryDAO {
     @Query("SELECT count(*) FROM Inventory WHERE outDate IS null")
     public LiveData<Integer> inventoryQuantity();
 
-    @Query("Select *, count(*) as \"frequencies\"  FROM Inventory INNER JOIN Ean USING (eanId) Group by eanId ORDER BY \"frequencies\" DESC LIMIT :limit")
-    public LiveData<List<inventoryEan>> getFavourite(int limit);
+    @Query("Select *, count(*) as \"frequencies\"  FROM Inventory INNER JOIN ArticleGroup USING (groupId) Group by groupId ORDER BY \"frequencies\" DESC LIMIT :limit")
+    public LiveData<List<InventoryArticleGroup>> getFavourite(int limit);
 
     //Joined Tables class to access data
-    static class inventoryEan {
-        public String eanId;
+    static class InventoryArticleGroup {
+
+        public Long groupId;
         public String name;
         public int inventoryId;
         public Date inDate;
@@ -53,8 +54,8 @@ public interface InventoryDAO {
         public int use;
         public int allocationTime;
 
-        public String getEanId() {
-            return eanId;
+        public Long getGroupId() {
+            return groupId;
         }
 
         public String getName() {
